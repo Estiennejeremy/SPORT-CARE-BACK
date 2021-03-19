@@ -1,0 +1,15 @@
+{
+  "name": "sport-care-back",
+  "version": "1.0.0",
+  "description": "back du project sport care",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {}
+}
