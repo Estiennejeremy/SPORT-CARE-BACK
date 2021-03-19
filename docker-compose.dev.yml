@@ -9,6 +9,6 @@ services:
       - "8000:8000"
     restart: unless-stopped
     volumes:
-      - ./back:/src
+      - ./mobile:/src
 
 
