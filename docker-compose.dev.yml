@@ -9,7 +9,7 @@ services:
       - "8000:8000"
     restart: unless-stopped
     volumes:
-      - ./back:/src
+      - ./mobile:/src
 
   my-mongodb:
     image: mongo:4.2.3-bionic
