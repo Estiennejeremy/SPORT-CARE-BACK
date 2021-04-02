@@ -10,6 +10,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./mobile:/src
+    networks:
+      - mongo_net   
 
   my-mongodb:
     image: mongo:4.2.3-bionic
@@ -17,7 +19,7 @@ services:
     ports:
       - 27017:27017
     environment:
-      - MONGO_INITDB_DATABASE=test
+      - MONGO_INITDB_DATABASE=sport_care
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=admin
     volumes:
@@ -36,7 +38,7 @@ services:
     container_name: my-mongoclient
     environment:
       - MONGO_SERVER=my-mongodb
-      - MONGO_INITDB_DATABASE=test
+      - MONGO_INITDB_DATABASE=sport_care
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=admin
     networks:
