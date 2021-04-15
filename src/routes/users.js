@@ -2,8 +2,10 @@ const express = require ('express')
 const router = express.Router()
 const Users = require('../models/users')
 
+
+//Test
 //Getting all
-router.get ('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const users = await Users.find()
     res.json(users)
