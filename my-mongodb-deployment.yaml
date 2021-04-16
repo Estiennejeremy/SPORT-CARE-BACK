@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: my-mongodb
+  name: my-mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: my-mongodb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/mongo_net: "true"
+        io.kompose.service: my-mongodb
+    spec:
+      containers:
+      - env:
+        - name: MONGO_INITDB_DATABASE
+          value: sport_care
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          value: admin
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: admin
+        image: mongo:4.2.3-bionic
+        imagePullPolicy: ""
+        name: my-mongodb
+        ports:
+        - containerPort: 27017
+        resources: {}
+        volumeMounts:
+        - mountPath: /docker-entrypoint-initdb.d
+          name: my-mongodb-claim0
+        - mountPath: /data/db
+          name: mongodb
+        - mountPath: /data/configdb
+          name: mongoconfig
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: my-mongodb-claim0
+        persistentVolumeClaim:
+          claimName: my-mongodb-claim0
+      - name: mongodb
+        persistentVolumeClaim:
+          claimName: mongodb
+      - name: mongoconfig
+        persistentVolumeClaim:
+          claimName: mongoconfig
+status: {}
