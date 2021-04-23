@@ -1,1 +1,39 @@
-GET http://localhost:27017/users
+GET http://localhost:8000/users
+
+
+###
+GET http://localhost:8000/users/6079a3d69382d9aea63660e5
+
+###
+POST http://localhost:8000/users
+Content-Type: application/json
+
+{
+    "Last_name": "Durand",
+    "First_name": "Jean",
+    "Birthdate": "1990-06-25",
+    "Adress": "13006 Marseille Avenue du Prado",
+    "Role": true,
+    "Civility": 1,
+    "Mail": "jean@mail.fr",
+    "Password": "azerty"
+}
+
+###
+PATCH http://localhost:8000/users/6082bba64bd4b035736998e8
+Content-Type: application/json
+
+{
+    "Last_name": "Durand",
+    "First_name": "Jean",
+    "Birthdate": "1990-06-25",
+    "Adress": "13006 Marseille Avenue du Prado",
+    "Role": false,
+    "Civility": 0,
+    "Mail": "jean2@mail.fr",
+    "Password": "azerty"
+}
+
+
+###
+DELETE http://localhost:8000/users/6082b2bc3daa6d611ec2c25e

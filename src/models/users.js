@@ -5,11 +5,11 @@ mongoose.set('debug', true);
 const userSchema = new mongoose.Schema ({
     Last_name: {
         type: String,
-        require
+        require : true
     },
     First_name: {
         type: String,
-        require
+        require: true
     },
     Birthdate: {
         type: Date,
@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema ({
         required: true
     },
     Role: {
-        type: String,
+        type: Boolean,
         required: true
     },
     UserDate: {
@@ -29,7 +29,9 @@ const userSchema = new mongoose.Schema ({
         default: Date.now
     },
     Civility: {
-        type: Boolean,
+        type: Number,
+        min: 0,
+        max: 1,
         required: true
     },
     Mail: {
@@ -40,7 +42,6 @@ const userSchema = new mongoose.Schema ({
         type: String,
         required: true
     }
-
 })
 
 
