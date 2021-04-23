@@ -20,7 +20,7 @@ COPY --chown=node . .
 
 
 # Bind to all network interfaces so that it can be mapped to the host OS
-ENV HOST=0.0.0.0 PORT=8000
+ENV HOST=0.0.0.0 PORT=8080
 
 EXPOSE ${PORT}
 CMD [ "node", "index.js"]
