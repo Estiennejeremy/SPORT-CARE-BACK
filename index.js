@@ -33,8 +33,19 @@ async function startServer() {
   });
 }
 
+app.set('views-engine', 'ejs')
+
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  //res.send('Hello World! ')
+  res.render('index.ejs', { name : "Marceau"})
+})
+
+app.get('/login', (req, res) => {
+  res.render('login.ejs')
+})
+
+app.get('/register', (req, res) => {
+  res.render('register.ejs')
 })
 
 startServer();

@@ -1,5 +1,6 @@
 const express = require ('express')
 const router = express.Router()
+const bcrypt = require("bcrypt");
 const user_model = require('../models/users')
 
 
@@ -20,6 +21,7 @@ router.get ('/:id', getUser, (req, res) => {
 
 //Creating One
 router.post ('/', async (req, res) => {
+  const hashedPassword = await bcrypt.hash(req.body.Password, 10)
   const user = new user_model ({
     Last_name: req.body.Last_name,
     First_name: req.body.First_name,
@@ -28,7 +30,7 @@ router.post ('/', async (req, res) => {
     Role: req.body.Role,
     Civility: req.body.Civility,
     Mail: req.body.Mail,
-    Password: req.body.Password
+    Password: hashedPassword
   })
   try {
     const newUser = await user.save()
