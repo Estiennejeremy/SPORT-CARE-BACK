@@ -1,4 +1,4 @@
-const mongoose = require ('mongoose')
+const mongoose = require ('mongoose');
 mongoose.set('debug', true);
 
 
@@ -33,12 +33,13 @@ const userSchema = new mongoose.Schema ({
         type: Number,
         min: 0,
         max: 1,
-        required: true,
+        required: false,
         default: 0
     },
-    Mail: {
+    Email: {
         type: String,
-        required: true
+        required: true,
+        unique: true 
     },
     Password: {
         type: String,

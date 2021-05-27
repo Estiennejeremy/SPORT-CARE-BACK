@@ -2,6 +2,7 @@ const express = require ('express')
 const router = express.Router()
 const bcrypt = require("bcrypt");
 const user_model = require('../models/users')
+//const report_model = require('../models/daily_report')
 
 
 //Getting all
@@ -14,13 +15,27 @@ router.get('/', async (req, res) => {
   }
 })
 
+//Getting all
+router.get('/daily_report', async (req, res) => {
+  try {
+    const reports = await report_model.find()
+    res.json(reports)
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }
+})
+
 //Getting One
 router.get ('/:id', getUser, (req, res) => {
   res.json(res.user)
 })
 
+
+//router.get ('register')
+
 //Creating One
-router.post ('/', async (req, res) => {
+/*
+router.post ('/register', checkNotAuthenticated, async (req, res) => {
   const hashedPassword = await bcrypt.hash(req.body.Password, 10)
   const user = new user_model ({
     Last_name: req.body.Last_name,
@@ -29,7 +44,7 @@ router.post ('/', async (req, res) => {
     Adress: req.body.Adress,
     Role: req.body.Role,
     Civility: req.body.Civility,
-    Mail: req.body.Mail,
+    Email: req.body.Email,
     Password: hashedPassword
   })
   try {
@@ -39,6 +54,24 @@ router.post ('/', async (req, res) => {
     res.status(400).json({ message: err.message })
   }
 })
+*/
+
+//Connection
+router.post ('/login', async (req, res) => {
+  const hashedPassword = await bcrypt.hash(req.body.Password, 10)
+  const user = new user_model ({
+    Login: req.body.Email,
+    Password: hashedPassword
+  })
+  try {
+    //Check if user exist un password il true
+  } catch (err) {
+    res.status(400).json({ message: err.message })
+  }
+})
+
+
+
 
 //Updating One
 router.patch ('/:id', getUser, async (req, res) => {
@@ -49,7 +82,7 @@ router.patch ('/:id', getUser, async (req, res) => {
     res.user.Last_name = req.body.Last_name
   }
   if (req.body.Mail != null) {
-    res.user.Mail = req.body.Mail
+    res.user.Email = req.body.Mail
   }
   if (req.body.Birthdate != null) {
     res.user.Birthdate = req.body.Birthdate
