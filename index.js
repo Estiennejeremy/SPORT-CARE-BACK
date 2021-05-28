@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const methodOverride = require('method-override')
 const passport = require('passport');
+const bcrypt = require ('bcrypt');
 const flash = require ('express-flash')
 const cors = require('cors');
 const errorhandler = require('errorhandler');

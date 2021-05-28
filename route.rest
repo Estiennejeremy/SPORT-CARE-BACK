@@ -7,7 +7,7 @@ GET http://localhost:8000/users/daily_reports
 GET http://localhost:8000/users/60afb1ced4d4779d0e1a4714
 ###
 
-POST http://localhost:8000/users/register
+POST http://localhost:8000/register
 Content-Type: application/json
 
 {
