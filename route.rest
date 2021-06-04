@@ -1,11 +1,13 @@
 GET http://localhost:8000/users
-
-
 ###
-GET http://localhost:8000/users/6079a3d69382d9aea63660e5
 
+GET http://localhost:8000/users/daily_reports
 ###
-POST http://localhost:8000/users
+
+GET http://localhost:8000/users/60afb1ced4d4779d0e1a4714
+###
+
+POST http://localhost:8000/register
 Content-Type: application/json
 
 {
@@ -15,10 +17,9 @@ Content-Type: application/json
     "Adress": "13006 Marseille Avenue du Prado",
     "Role": true,
     "Civility": 1,
-    "Mail": "jean@mail.fr",
+    "Email": "jean.durand@mail.fr",
     "Password": "azerty"
 }
-
 ###
 PATCH http://localhost:8000/users/6082bba64bd4b035736998e8
 Content-Type: application/json
@@ -30,10 +31,10 @@ Content-Type: application/json
     "Adress": "13006 Marseille Avenue du Prado",
     "Role": false,
     "Civility": 0,
-    "Mail": "jean2@mail.fr",
+    "Email": "jean2@mail.fr",
     "Password": "azerty"
 }
 
 
 ###
-DELETE http://localhost:8000/users/6082b2bc3daa6d611ec2c25e
+DELETE http://localhost:8000/users/60a7e317a2a79c2501a9af76
