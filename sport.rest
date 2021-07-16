@@ -1,0 +1,25 @@
+GET http://localhost:8000/sports
+###
+
+GET http://localhost:8000/sports/60f1ac836f02c2a36996a520
+###
+
+
+POST http://localhost:8000/sports
+Content-Type: application/json
+
+{
+    "name": "runnig"
+}
+###
+
+PATCH http://localhost:8000/sports/60f1ac836f02c2a36996a520
+Content-Type: application/json
+
+{
+    "name": "biking"
+}
+###
+
+DELETE http://localhost:8000/sports/60f1ac836f02c2a36996a520
+###

@@ -40,16 +40,18 @@ db.on("error", (error) => console.error(error));
 db.once("open", (error) => console.log("Connected to database"));
 
 
-
 const userModel = require("./src/models/users");
 
 const usersRouter = require("./src/routes/users");
 const reportsRouter = require("./src/routes/dailyReports");
 const trainingsRouter = require("./src/routes/trainings");
+const sportsRouter = require("./src/routes/sports");
 
 app.use("/users", usersRouter);
 app.use("/dailyReports", reportsRouter);
 app.use("/trainings", trainingsRouter);
+app.use("/sports", sportsRouter);
+
 
 app.set("views-engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
@@ -93,7 +95,7 @@ function checkNotAuthenticated(req, res, next) {
 
 
 app.get("/", checkAuthenticated, (req, res) => {
-  res.render("index.ejs", { name: req.user.First_name });
+  res.render("index.ejs", { name: req.user.firstName });
 });
 
 app.get("/login", checkNotAuthenticated, (req, res) => {
@@ -121,16 +123,16 @@ app.get("/register", checkNotAuthenticated, (req, res) => {
 
 //Creating One
 app.post("/register", checkNotAuthenticated, async (req, res) => {
-  const hashedPassword = await bcrypt.hash(req.body.Password, 10);
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const user = new userModel({
-    Last_name: req.body.Last_name,
-    First_name: req.body.First_name,
+    lastName: req.body.lastName,
+    firstName: req.body.firstName,
     Birthdate: req.body.Birthdate,
-    Adress: req.body.Adress,
-    Role: req.body.Role,
-    Civility: req.body.Civility,
-    Email: req.body.Email,
-    Password: hashedPassword,
+    adress: req.body.adress,
+    role: req.body.role,
+    civility: req.body.civility,
+    email: req.body.email,
+    password: hashedPassword,
   });
   try {
     const newUser = await user.save();

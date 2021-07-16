@@ -18,6 +18,7 @@ Content-Type: application/json
     "Password": "azerty"
 }
 ###
+
 PATCH http://localhost:8000/users/6082bba64bd4b035736998e8
 Content-Type: application/json
 
@@ -31,7 +32,6 @@ Content-Type: application/json
     "Email": "jean2@mail.fr",
     "Password": "azerty"
 }
-
 
 ###
 DELETE http://localhost:8000/users/60a7e317a2a79c2501a9af76

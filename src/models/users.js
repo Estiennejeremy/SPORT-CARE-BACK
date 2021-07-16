@@ -3,15 +3,15 @@ mongoose.set('debug', true);
 
 
 const userSchema = new mongoose.Schema ({
-    Last_name: {
+    lastName: {
         type: String,
         require : true
     },
-    First_name: {
+    firstName: {
         type: String,
         require: true
     },
-    Birthdate: {
+    birthdate: {
         type: Date,
         required: false
     },
@@ -19,33 +19,33 @@ const userSchema = new mongoose.Schema ({
         type: String,
         required: false
     },
-    Role: {
+    role: {
         type: Boolean,
         required: true,
         default: false
     },
-    UserDate: {
+    userDate: {
         type: Date,
         required: true,
         default: Date.now
     },
-    Civility: {
+    civility: {
         type: Number,
         min: 0,
         max: 1,
         required: false,
         default: 0
     },
-    Email: {
+    email: {
         type: String,
         required: true,
         unique: true 
     },
-    Password: {
+    password: {
         type: String,
         required: true
     },
-    CoachId: {
+    coachId: {
         type: String,
         required: false
     }

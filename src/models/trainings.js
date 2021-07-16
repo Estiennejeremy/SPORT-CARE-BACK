@@ -14,24 +14,24 @@ const trainingSchema = new mongoose.Schema ({
         required: true,
         default: 0
     },
-    Date: {
+    date: {
         type: Date,
         required: true,
         default: Date.now
     },
-    Effort: {
+    effort: {
         type: Number,
         min: 1,
         max: 5,
         required: false,
         default: 1
     },
-    Recap: {
+    recap: {
         type: String,
         required: false,
         default: null
     },
-    Duration: {
+    duration: {
         type: Number,
         required: true,
         default: 0

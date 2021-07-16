@@ -49,9 +49,9 @@ router.post ('/register', checkNotAuthenticated, async (req, res) => {
 
 //Connection
 router.post ('/login', async (req, res) => {
-  const hashedPassword = await bcrypt.hash(req.body.Password, 10)
+  const hashedPassword = await bcrypt.hash(req.body.password, 10)
   const user = new user_model ({
-    Login: req.body.Email,
+    Login: req.body.email,
     Password: hashedPassword
   })
   try {
@@ -63,32 +63,31 @@ router.post ('/login', async (req, res) => {
 
 
 
-
 //Updating One
 router.patch ('/:id', getUser, async (req, res) => {
-  if (req.body.First_name != null) {
-    res.user.First_name = req.body.First_name
+  if (req.body.firstName != null) {
+    res.user.firstName = req.body.firstName
   }
-  if (req.body.Last_name != null) {
-    res.user.Last_name = req.body.Last_name
+  if (req.body.lastName != null) {
+    res.user.lastName = req.body.lastName
   }
-  if (req.body.Mail != null) {
-    res.user.Email = req.body.Mail
+  if (req.body.email != null) {
+    res.user.email = req.body.email
   }
-  if (req.body.Birthdate != null) {
-    res.user.Birthdate = req.body.Birthdate
+  if (req.body.birthdate != null) {
+    res.user.birthdate = req.body.birthdate
   }
   if (req.body.Adresse != null) {
-    res.user.Adresse = req.body.Adresse
+    res.user.Adresse = req.body.adresse
   }
-  if (req.body.Role != null) {
-    res.user.Role = req.body.Role
+  if (req.body.role != null) {
+    res.user.role = req.body.role
   }
-  if (req.body.Civility != null) {
-    res.user.Civility = req.body.Civility
+  if (req.body.civility != null) {
+    res.user.civility = req.body.civility
   }
-  if (req.body.Password != null) {
-    res.user.Password = req.body.Password
+  if (req.body.password != null) {
+    res.user.password = req.body.password
   }
 
   try {
