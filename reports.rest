@@ -1,0 +1,33 @@
+GET http://localhost:8000/dailyReports
+###
+
+GET http://localhost:8000/dailyReports/60f040742d263566d54ab2e6
+###
+
+GET http://localhost:8000/dailyReports/user/60cc68752f3cc4a32e1f9809
+###
+
+POST http://localhost:8000/dailyReports
+Content-Type: application/json
+
+{
+    "UserId": "60cc68752f3cc4a32e1f9809",
+    "DailyFeelings": 5,
+    "Rmssd": 100.1,
+    "Mhr": 120,
+    "Weight": 70,
+    "Bmi": 20,
+    "Size": 185
+}
+
+###
+PATCH http://localhost:8000/dailyReports/60f03860ea7601893d2d3f2c
+Content-Type: application/json
+
+{
+    "Size": 180
+}
+###
+
+DELETE http://localhost:8000/dailyReports/60f037e96166d450a16604f8
+###

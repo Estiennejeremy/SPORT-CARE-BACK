@@ -1,9 +1,6 @@
 GET http://localhost:8000/users
 ###
 
-GET http://localhost:8000/users/daily_reports
-###
-
 GET http://localhost:8000/users/60afb1ced4d4779d0e1a4714
 ###
 

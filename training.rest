@@ -1,0 +1,31 @@
+GET http://localhost:8000/trainings
+###
+
+GET http://localhost:8000/trainings/60f056ce6180a6b1b2ad0631
+###
+
+GET http://localhost:8000/trainings/user/60cc68752f3cc4a32e1f9809
+###
+
+POST http://localhost:8000/trainings
+Content-Type: application/json
+
+{
+    "UserId": "60cc68752f3cc4a32e1f9809",
+    "Effort": 3,
+    "Recap": "",
+    "Duration": 90,
+    "sportID": "a"
+}
+###
+
+PATCH http://localhost:8000/trainings/60f0570c6180a636e7ad0632
+Content-Type: application/json
+
+{
+    "Effort": 4,
+}
+###
+
+DELETE http://localhost:8000/trainings/60f0570c6180a636e7ad0632
+###

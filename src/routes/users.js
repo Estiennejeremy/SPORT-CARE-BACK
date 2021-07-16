@@ -15,15 +15,6 @@ router.get('/', async (req, res) => {
   }
 })
 
-//Getting all
-router.get('/daily_report', async (req, res) => {
-  try {
-    const reports = await report_model.find()
-    res.json(reports)
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
-})
 
 //Getting One
 router.get ('/:id', getUser, (req, res) => {

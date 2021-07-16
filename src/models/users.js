@@ -44,6 +44,10 @@ const userSchema = new mongoose.Schema ({
     Password: {
         type: String,
         required: true
+    },
+    CoachId: {
+        type: String,
+        required: false
     }
 })
 

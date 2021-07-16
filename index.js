@@ -10,8 +10,7 @@ const cors = require("cors");
 const errorhandler = require("errorhandler");
 require("dotenv").config();
 const app = express();
-const usersRouter = require("./src/routes/users");
-const user_model = require("./src/models/users");
+
 
 const initializePassport = require("./passport-config");
 initializePassport(passport);
@@ -40,7 +39,18 @@ const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
 db.once("open", (error) => console.log("Connected to database"));
 
+
+
+const userModel = require("./src/models/users");
+
+const usersRouter = require("./src/routes/users");
+const reportsRouter = require("./src/routes/dailyReports");
+const trainingsRouter = require("./src/routes/trainings");
+
 app.use("/users", usersRouter);
+app.use("/dailyReports", reportsRouter);
+app.use("/trainings", trainingsRouter);
+
 app.set("views-engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 app.use(flash());
@@ -54,7 +64,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(methodOverride("_method"));
-app.use("/users", usersRouter);
+
 
 async function startServer() {
   app.listen(process.env.PORT, (err) => {
@@ -66,9 +76,6 @@ async function startServer() {
   });
 }
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
 
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
@@ -84,12 +91,6 @@ function checkNotAuthenticated(req, res, next) {
   next();
 }
 
-/*
-app.get('/', (req, res) => {
-  //res.send('Hello World! ')
-  res.render('index.ejs', { name : req.user.First_name })
-})
-*/
 
 app.get("/", checkAuthenticated, (req, res) => {
   res.render("index.ejs", { name: req.user.First_name });
@@ -121,7 +122,7 @@ app.get("/register", checkNotAuthenticated, (req, res) => {
 //Creating One
 app.post("/register", checkNotAuthenticated, async (req, res) => {
   const hashedPassword = await bcrypt.hash(req.body.Password, 10);
-  const user = new user_model({
+  const user = new userModel({
     Last_name: req.body.Last_name,
     First_name: req.body.First_name,
     Birthdate: req.body.Birthdate,
