@@ -8,14 +8,14 @@ POST http://localhost:8000/register
 Content-Type: application/json
 
 {
-    "Last_name": "Durand",
-    "First_name": "Jean",
-    "Birthdate": "1990-06-25",
-    "Adress": "13006 Marseille Avenue du Prado",
-    "Role": true,
-    "Civility": 1,
-    "Email": "jean.durand@mail.fr",
-    "Password": "azerty"
+    "lastName": "Durand",
+    "firstName": "Jean",
+    "birthdate": "1990-06-25",
+    "adress": "13006 Marseille Avenue du Prado",
+    "role": true,
+    "civility": 1,
+    "email": "jean.durand@mail.fr",
+    "password": "azerty"
 }
 ###
 
@@ -23,14 +23,14 @@ PATCH http://localhost:8000/users/6082bba64bd4b035736998e8
 Content-Type: application/json
 
 {
-    "Last_name": "Durand",
-    "First_name": "Jean",
-    "Birthdate": "1990-06-25",
-    "Adress": "13006 Marseille Avenue du Prado",
-    "Role": false,
-    "Civility": 0,
-    "Email": "jean2@mail.fr",
-    "Password": "azerty"
+    "lastName": "Durand",
+    "firstName": "Jean",
+    "birthdate": "1990-06-25",
+    "adress": "13006 Marseille Avenue du Prado",
+    "role": false,
+    "civility": 0,
+    "email": "jean2@mail.fr",
+    "password": "azerty"
 }
 
 ###

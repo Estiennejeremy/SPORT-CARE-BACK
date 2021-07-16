@@ -12,9 +12,9 @@ Content-Type: application/json
 
 {
     "userId": "60cc68752f3cc4a32e1f9809",
-    "Effort": 3,
-    "Recap": "",
-    "Duration": 90,
+    "effort": 3,
+    "recap": "",
+    "duration": 90,
     "sportID": "a"
 }
 ###

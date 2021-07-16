@@ -4,44 +4,44 @@ mongoose.set('debug', true);
 
 
 const reportSchema = new mongoose.Schema ({
-    UserId: {
+    userId: {
         type: String,
         required: true,
         default: 0
     },
-    Date: {
+    date: {
         type: Date,
         required: true,
         default: Date.now
     },
-    DailyFeelings: {
+    dailyFeelings: {
         type: Number,
         min: 1,
         max: 5,
         required: false,
         default: 1
     },
-    Size: {
+    size: {
         type: Number,
         required: false,
         default: null
     },
-    Weight: {
+    weight: {
         type: Number,
         required: false,
         default: null
     },
-    Rmssd: {
+    rmssd: {
         type: Number,
         required: false,
         default: null
     },
-    Mhr: {
+    mhr: {
         type: Number,
         required: false,
         default: null
     },
-    Bmi: {
+    bmi: {
         type: Number,
         required: false,
         default: null
