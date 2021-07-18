@@ -102,15 +102,33 @@ app.get("/login", checkNotAuthenticated, (req, res) => {
   res.render("login.ejs");
 });
 
+/*
 app.post(
   "/login",
-  checkNotAuthenticated,
   passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/login",
     failureFlash: true,
   })
-);
+*/
+
+app.post('/login', async (req, res, next) => {
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  const user = new userModel({
+    email: req.body.email,
+    password: hashedPassword,
+  });
+  passport.authenticate('local', function(err, user, info) {
+    if (err) { res.status(400).json(err); }
+    if (!user) { res.status(401).json(message: "user not find!"); }
+    req.logIn(user, function(err) {
+      if (err) { res.status(400).json(err); }
+      res.status(201).json(true);
+    });
+  })(req, res, next);
+});
+
+
 
 app.delete("/logout", (req, res) => {
   req.logOut();
@@ -122,12 +140,12 @@ app.get("/register", checkNotAuthenticated, (req, res) => {
 });
 
 //Creating One
-app.post("/register", checkNotAuthenticated, async (req, res) => {
+app.post("/register", async (req, res) => {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const user = new userModel({
     lastName: req.body.lastName,
     firstName: req.body.firstName,
-    Birthdate: req.body.Birthdate,
+    birthdate: req.body.birthdate,
     adress: req.body.adress,
     role: req.body.role,
     civility: req.body.civility,

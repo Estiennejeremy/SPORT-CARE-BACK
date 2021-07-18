@@ -10,11 +10,11 @@ Content-Type: application/json
 {
     "lastName": "Durand",
     "firstName": "Jean",
-    "birthdate": "1990-06-25",
+    "birthdate": "1990-07-18T14:16:42.840+00:00",
     "adress": "13006 Marseille Avenue du Prado",
     "role": true,
     "civility": 1,
-    "email": "jean.durand3@mail.fr",
+    "email": "jean.durand4@mail.fr",
     "password": "azerty"
 }
 ###
