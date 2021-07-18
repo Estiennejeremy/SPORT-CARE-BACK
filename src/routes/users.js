@@ -32,7 +32,7 @@ router.post ('/register', checkNotAuthenticated, async (req, res) => {
     Last_name: req.body.Last_name,
     First_name: req.body.First_name,
     Birthdate: req.body.Birthdate,
-    Adress: req.body.Adress,
+    address: req.body.address,
     Role: req.body.Role,
     Civility: req.body.Civility,
     email: req.body.email,
@@ -77,8 +77,8 @@ router.patch ('/:id', getUser, async (req, res) => {
   if (req.body.birthdate != null) {
     res.user.birthdate = req.body.birthdate
   }
-  if (req.body.Adresse != null) {
-    res.user.Adresse = req.body.adresse
+  if (req.body.address != null) {
+    res.user.address = req.body.address
   }
   if (req.body.role != null) {
     res.user.role = req.body.role

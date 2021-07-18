@@ -112,6 +112,7 @@ app.post(
   })
 */
 
+/*
 app.post('/login', async (req, res, next) => {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const user = new userModel({
@@ -126,7 +127,7 @@ app.post('/login', async (req, res, next) => {
       res.status(201).json(true);
     });
   })(req, res, next);
-});
+});*/
 
 
 
@@ -146,7 +147,7 @@ app.post("/register", async (req, res) => {
     lastName: req.body.lastName,
     firstName: req.body.firstName,
     birthdate: req.body.birthdate,
-    adress: req.body.adress,
+    address: req.body.address,
     role: req.body.role,
     civility: req.body.civility,
     email: req.body.email,
