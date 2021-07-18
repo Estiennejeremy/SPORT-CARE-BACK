@@ -35,7 +35,7 @@ router.post ('/register', checkNotAuthenticated, async (req, res) => {
     Adress: req.body.Adress,
     Role: req.body.Role,
     Civility: req.body.Civility,
-    Email: req.body.Email,
+    email: req.body.email,
     Password: hashedPassword
   })
   try {
@@ -51,8 +51,8 @@ router.post ('/register', checkNotAuthenticated, async (req, res) => {
 router.post ('/login', async (req, res) => {
   const hashedPassword = await bcrypt.hash(req.body.password, 10)
   const user = new user_model ({
-    Login: req.body.email,
-    Password: hashedPassword
+    login: req.body.email,
+    password: hashedPassword
   })
   try {
     //Check if user exist un password il true

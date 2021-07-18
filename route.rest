@@ -1,7 +1,7 @@
 GET http://localhost:8000/users
 ###
 
-GET http://localhost:8000/users/60afb1ced4d4779d0e1a4714
+GET http://localhost:8000/users/60f1b59674af70801beba6e3
 ###
 
 POST http://localhost:8000/register
@@ -14,7 +14,7 @@ Content-Type: application/json
     "adress": "13006 Marseille Avenue du Prado",
     "role": true,
     "civility": 1,
-    "email": "jean.durand@mail.fr",
+    "email": "jean.durand3@mail.fr",
     "password": "azerty"
 }
 ###
@@ -34,4 +34,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:8000/users/60a7e317a2a79c2501a9af76
+DELETE http://localhost:8000/users/60ba3cad96a985677d8113a7

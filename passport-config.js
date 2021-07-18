@@ -7,7 +7,7 @@ function initialize (passport) {
     var user
     const authenticateUser = async (email, password, done) => {
          try {
-            user = await user_model.findOne({Email: email})
+            user = await user_model.findOne({email: email})
             if (user == null) {
                 return done(null, false, { message: 'No user with that email' })
             }
