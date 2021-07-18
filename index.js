@@ -111,11 +111,6 @@ app.get("/login", checkNotAuthenticated, (req, res) => {
 
 
 app.post('/login', async (req, res, next) => {
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  const user = new userModel({
-    email: req.body.email,
-    password: hashedPassword,
-  });
   passport.authenticate('local', function(err, user, info) {
     if (err) { res.status(400).json(err); }
     if (!user) { res.status(401).json({message: "user not find!"}); }
