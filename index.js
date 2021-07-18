@@ -12,8 +12,14 @@ require("dotenv").config();
 const app = express();
 
 
-const initializePassport = require("./passport-config");
-initializePassport(passport);
+const initializePassport = require('./passport-config')
+initializePassport(
+  passport,
+  email => users.find(user => user.email === email),
+  id => users.find(user => user.id === id)
+)
+
+const users = []
 
 app.get("/status", (req, res) => {
   res.status(200).end();
@@ -102,17 +108,8 @@ app.get("/login", checkNotAuthenticated, (req, res) => {
   res.render("login.ejs");
 });
 
-/*
-app.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-    failureFlash: true,
-  })
-*/
 
-/*
+
 app.post('/login', async (req, res, next) => {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const user = new userModel({
@@ -121,13 +118,13 @@ app.post('/login', async (req, res, next) => {
   });
   passport.authenticate('local', function(err, user, info) {
     if (err) { res.status(400).json(err); }
-    if (!user) { res.status(401).json(message: "user not find!"); }
+    if (!user) { res.status(401).json({message: "user not find!"}); }
     req.logIn(user, function(err) {
-      if (err) { res.status(400).json(err); }
+      if (err) { res.status(402).json(err); }
       res.status(201).json(true);
     });
   })(req, res, next);
-});*/
+});
 
 
 
