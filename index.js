@@ -116,7 +116,7 @@ app.post('/login', async (req, res, next) => {
     if (!user) { res.status(401).json({message: "user not find!"}); }
     req.logIn(user, function(err) {
       if (err) { res.status(402).json(err); }
-      res.status(201).json(true);
+      res.status(201).json(user);
     });
   })(req, res, next);
 });
