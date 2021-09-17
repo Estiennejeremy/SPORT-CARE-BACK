@@ -11,15 +11,14 @@ const errorhandler = require("errorhandler");
 require("dotenv").config();
 const app = express();
 
-
-const initializePassport = require('./passport-config')
+const initializePassport = require("./passport-config");
 initializePassport(
   passport,
-  email => users.find(user => user.email === email),
-  id => users.find(user => user.id === id)
-)
+  (email) => users.find((user) => user.email === email),
+  (id) => users.find((user) => user.id === id)
+);
 
-const users = []
+const users = [];
 
 app.get("/status", (req, res) => {
   res.status(200).end();
@@ -45,7 +44,6 @@ const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
 db.once("open", (error) => console.log("Connected to database"));
 
-
 const userModel = require("./src/models/users");
 
 const usersRouter = require("./src/routes/users");
@@ -57,7 +55,6 @@ app.use("/users", usersRouter);
 app.use("/dailyReports", reportsRouter);
 app.use("/trainings", trainingsRouter);
 app.use("/sports", sportsRouter);
-
 
 app.set("views-engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
@@ -73,7 +70,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(methodOverride("_method"));
 
-
 async function startServer() {
   app.listen(process.env.PORT, (err) => {
     if (err) {
@@ -83,7 +79,6 @@ async function startServer() {
     console.log(`Your server is ready !`);
   });
 }
-
 
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
@@ -99,7 +94,6 @@ function checkNotAuthenticated(req, res, next) {
   next();
 }
 
-
 app.get("/", checkAuthenticated, (req, res) => {
   res.render("index.ejs", { name: req.user.firstName });
 });
@@ -108,20 +102,22 @@ app.get("/login", checkNotAuthenticated, (req, res) => {
   res.render("login.ejs");
 });
 
-
-
-app.post('/login', async (req, res, next) => {
-  passport.authenticate('local', function(err, user, info) {
-    if (err) { res.status(400).json(err); }
-    if (!user) { res.status(401).json({message: "user not find!"}); }
-    req.logIn(user, function(err) {
-      if (err) { res.status(402).json(err); }
+app.post("/login", async (req, res, next) => {
+  passport.authenticate("local", function (err, user, info) {
+    if (err) {
+      res.status(400).json(err);
+    }
+    if (!user) {
+      res.status(401).json({ message: "user not find!" });
+    }
+    req.logIn(user, function (err) {
+      if (err) {
+        res.status(402).json(err);
+      }
       res.status(201).json(user);
     });
   })(req, res, next);
 });
-
-
 
 app.delete("/logout", (req, res) => {
   req.logOut();
@@ -131,6 +127,9 @@ app.delete("/logout", (req, res) => {
 app.get("/register", checkNotAuthenticated, (req, res) => {
   res.render("register.ejs");
 });
+
+//TO delete
+const conditions = ["good", "critical", "satisfactory"];
 
 //Creating One
 app.post("/register", async (req, res) => {
@@ -144,6 +143,7 @@ app.post("/register", async (req, res) => {
     civility: req.body.civility,
     email: req.body.email,
     password: hashedPassword,
+    condition: conditions[getRandom(0, 2)],
   });
   try {
     const newUser = await user.save();
