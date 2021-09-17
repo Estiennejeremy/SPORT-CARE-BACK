@@ -31,11 +31,6 @@ const reportSchema = new mongoose.Schema ({
         required: false,
         default: null
     },
-    rmssd: {
-        type: Number,
-        required: false,
-        default: null
-    },
     mhr: {
         type: Number,
         required: false,
