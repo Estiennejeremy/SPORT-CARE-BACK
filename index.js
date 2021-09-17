@@ -9,6 +9,7 @@ const flash = require("express-flash");
 const cors = require("cors");
 const errorhandler = require("errorhandler");
 require("dotenv").config();
+const jwt = require("jsonwebtoken");
 const app = express();
 
 const initializePassport = require("./passport-config");
@@ -103,20 +104,47 @@ app.get("/login", checkNotAuthenticated, (req, res) => {
 });
 
 app.post("/login", async (req, res, next) => {
-  passport.authenticate("local", function (err, user, info) {
-    if (err) {
-      res.status(400).json(err);
-    }
-    if (!user) {
-      res.status(401).json({ message: "user not find!" });
-    }
-    req.logIn(user, function (err) {
-      if (err) {
-        res.status(402).json(err);
+  res.setHeader("Content-Type", "application/json");
+
+  if (req.body.hasOwnProperty("email") && req.body.hasOwnProperty("password")) {
+    const email = req.body.email;
+    const password = req.body.password;
+    user = await userModel.findOne({ email });
+    // If user email exists in DB, ...
+    if (user) {
+      // And, if is valid password,
+      if (bcrypt.compareSync(password, user.password)) {
+        // We create a new brand jwt token
+        const token = jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", {
+          expiresIn: "24h",
+        });
+
+        res.status(200).send({
+          jwt: token,
+        });
+      } else {
+        res.status(400).end(JSON.stringify({ message: "Wrong password" }));
       }
-      res.status(201).json(user);
-    });
-  })(req, res, next);
+    } else {
+      res.status(400).end(JSON.stringify({ message: "Wrong email" }));
+    }
+  } else {
+    res.status(400).end(JSON.stringify({ message: "Invalid request" }));
+  }
+  // passport.authenticate("local", function (err, user, info) {
+  //   if (err) {
+  //     res.status(400).json(err);
+  //   }
+  //   if (!user) {
+  //     res.status(401).json({ message: "user not find!" });
+  //   }
+  //   req.logIn(user, function (err) {
+  //     if (err) {
+  //       res.status(402).json(err);
+  //     }
+  //     res.status(201).json(user);
+  //   });
+  // })(req, res, next);
 });
 
 app.delete("/logout", (req, res) => {

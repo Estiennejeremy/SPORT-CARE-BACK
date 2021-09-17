@@ -47,16 +47,17 @@ router.post ('/register', checkNotAuthenticated, async (req, res) => {
 
 //Connection
 router.post("/login", async (req, res) => {
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  const user = new user_model({
-    login: req.body.email,
-    password: hashedPassword,
-  });
-  try {
-    //Check if user exist un password il true
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
+  console.log(req.body);
+  // const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  // const user = new user_model({
+  //   login: req.body.email,
+  //   password: hashedPassword,
+  // });
+  // try {
+  //   //Check if user exist un password il true
+  // } catch (err) {
+  //   res.status(400).json({ message: err.message });
+  // }
 });
 
 //Updating One
