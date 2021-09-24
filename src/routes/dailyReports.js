@@ -102,7 +102,7 @@ async function getReport (req, res, next) {
 async function getUserReports (req, res, next) {
   let reports
   try {
-    reports = await reportModel.find({'id': req.params.UserId})
+    reports = await reportModel.find({'userId': req.params.UserId})
     if (reports == null) {
       return res.status(404).json({ message: 'Cannot find user'})
     }

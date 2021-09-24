@@ -3,7 +3,7 @@ const mongoose = require ('mongoose');
 mongoose.set('debug', true);
 
 
-const massageSchema = new mongoose.Schema ({
+const messageSchema = new mongoose.Schema ({
     userId: {
         type: String,
         required: true,

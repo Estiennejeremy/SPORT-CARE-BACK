@@ -14,8 +14,12 @@ router.get('/', async (req, res) => {
 })
 
 //Getting One
-router.get ('/:id', getcardiacRecord, (req, res) => {
+router.get ('/:id', getCardiacRecord, (req, res) => {
+  try {
   res.json(res.cardiacRecords)
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }
 })
 
 
@@ -62,7 +66,7 @@ router.delete ('/:id', getCardiacRecord, async (req, res) => {
 })
 
 
-async function getcardiacRecord (req, res, next) {
+async function getCardiacRecord (req, res, next) {
   let cardiacRecord
   try {
     cardiacRecord = await cardiacModel.findById(req.params.id)

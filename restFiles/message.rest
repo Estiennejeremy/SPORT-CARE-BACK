@@ -1,0 +1,28 @@
+GET http://localhost:8000/messages
+###
+
+GET http://localhost:8000/messages/614de9e9d24e956d094b7557
+###
+
+
+POST http://localhost:8000/messages
+Content-Type: application/json
+
+{
+    "userId": "60f1b59674af70801beba6e3",
+    "userIdRecever": "60f437cae3256550d7dc52f7",
+    "message": "Hello coach!"
+
+}
+###
+
+PATCH http://localhost:8000/messages/614de9e9d24e956d094b7557
+Content-Type: application/json
+
+{
+    "message": "Hello dear coach!"
+}
+###
+
+DELETE http://localhost:8000/messages/614de9e9d24e956d094b7557
+###
