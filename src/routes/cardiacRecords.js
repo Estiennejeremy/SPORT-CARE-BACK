@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 //Getting One
 router.get ('/:id', getCardiacRecord, async (req, res) => {
   try {
-  res.json(res.cardiacRecord)
+    res.json(res.cardiacRecord)
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
@@ -24,7 +24,11 @@ router.get ('/:id', getCardiacRecord, async (req, res) => {
 
 //Getting all for a report
 router.get ('/dailyReport/:id', getReportCardiacRecords, (req, res) => {
-  res.json(res.cardiacRecords)
+  try {
+    res.json(res.cardiacRecord)
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }
 })
 
 

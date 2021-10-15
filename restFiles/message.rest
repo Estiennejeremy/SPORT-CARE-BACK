@@ -11,9 +11,20 @@ POST http://localhost:8000/messages
 Content-Type: application/json
 
 {
-    "userId": "60f1b59674af70801beba6e3",
-    "userIdRecever": "60f437cae3256550d7dc52f7",
-    "message": "Hello coach!"
+    "userId": "616932566854306e86c2ca0e",
+    "userIdRecever": "61693184aad9f75696aa46ad",
+    "message": "Mes performences sont bonnes?"
+
+}
+###
+
+POST http://localhost:8000/messages
+Content-Type: application/json
+
+{
+    "userId": "61693184aad9f75696aa46ad",
+    "userIdRecever": "616932566854306e86c2ca0e",
+    "message": "Excellents, continue comme ça!"
 
 }
 ###

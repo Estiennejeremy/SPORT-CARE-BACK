@@ -172,13 +172,14 @@ app.post("/register", async (req, res) => {
     lastName: req.body.lastName,
     firstName: req.body.firstName,
     birthdate: req.body.birthdate,
+    userDate: new Date(),
     address: req.body.address,
     role: req.body.role,
     civility: req.body.civility,
     email: req.body.email,
     coachId: req.body.coachId,
     password: hashedPassword,
-    condition: conditions[getRandom(0, 2)],
+    condition: "good"
   });
   try {
     const newUser = await user.save();
