@@ -13,13 +13,18 @@ router.get('/', async (req, res) => {
   }
 })
 
+//Getting all for a user
+router.get ('/user/:id', getUserReports, (req, res) => {
+  try {
+    res.json(res.reports)
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }    
+})
+
 //Getting One
 router.get ('/:id', getReport, (req, res) => {
   res.json(res.report)
-})
-
-router.get ('/user/:id', getUserReports, (req, res) => {
-  res.json(res.reports)
 })
 
 // Creating one

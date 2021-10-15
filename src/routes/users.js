@@ -1,13 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const user_model = require("../models/users");
-//const report_model = require('../models/daily_report')
+const userModel = require("../models/users");
 
 //Getting all
 router.get("/", async (req, res) => {
   try {
-    const users = await user_model.find();
+    const users = await userModel.find();
     console.log(users);
     res.json(users);
   } catch (err) {
@@ -20,13 +19,20 @@ router.get("/:id", getUser, (req, res) => {
   res.json(res.user);
 });
 
-//router.get ('register')
+//Getting all atheletes for a coach
+router.get("/coach/:id", getUser, (req, res) => {
+  try {
+    res.json(res.athletes);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }   
+});
 
 //Creating One
 /*
 router.post ('/register', checkNotAuthenticated, async (req, res) => {
   const hashedPassword = await bcrypt.hash(req.body.Password, 10)
-  const user = new user_model ({
+  const user = new userModel ({
     Last_name: req.body.Last_name,
     First_name: req.body.First_name,
     Birthdate: req.body.Birthdate,
@@ -86,6 +92,9 @@ router.patch("/:id", getUser, async (req, res) => {
   if (req.body.password != null) {
     res.user.password = req.body.password;
   }
+  if (req.body.condition != null) {
+    res.user.condition = req.body.condition;
+  }
 
   try {
     const updatedUser = await res.user.save();
@@ -108,7 +117,7 @@ router.delete("/:id", getUser, async (req, res) => {
 async function getUser(req, res, next) {
   let user;
   try {
-    user = await user_model.findById(req.params.id);
+    user = await userModel.findById(req.params.id);
     if (user == null) {
       return res.status(404).json({ message: "Cannot find user" });
     }
@@ -117,6 +126,20 @@ async function getUser(req, res, next) {
   }
   res.user = user;
   next();
+}
+
+async function getCoachAthletes (req, res, next) {
+  let athletes
+  try {
+    athletes = await userModel.find({'coachId': req.params.coachId})
+    if (reports == null) {
+      return res.status(404).json({ message: 'Cannot find athletes'})
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message })
+  }
+  res.athletes = athletes
+  next()
 }
 
 module.exports = router;

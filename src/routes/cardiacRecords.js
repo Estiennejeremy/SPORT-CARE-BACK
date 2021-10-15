@@ -14,12 +14,17 @@ router.get('/', async (req, res) => {
 })
 
 //Getting One
-router.get ('/:id', getCardiacRecord, (req, res) => {
+router.get ('/:id', getCardiacRecord, async (req, res) => {
   try {
-  res.json(res.cardiacRecords)
+  res.json(res.cardiacRecord)
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
+})
+
+//Getting all for a report
+router.get ('/dailyReport/:id', getReportCardiacRecords, (req, res) => {
+  res.json(res.cardiacRecords)
 })
 
 
@@ -80,6 +85,19 @@ async function getCardiacRecord (req, res, next) {
   next()
 }
 
+async function getReportCardiacRecords (req, res, next) {
+  let cardiacRecords
+  try {
+    cardiacRecords = await cardiacModel.find({'userId': req.params.dailyReportId})
+    if (cardiacRecords == null) {
+      return res.status(404).json({ message: 'Cannot find daily report'})
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message })
+  }
+  res.cardiacRecords = cardiacRecords
+  next()
+}
 
 
 
