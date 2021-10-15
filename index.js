@@ -48,14 +48,20 @@ db.once("open", (error) => console.log("Connected to database"));
 const userModel = require("./src/models/users");
 
 const usersRouter = require("./src/routes/users");
+const coachsRouter = require("./src/routes/coachs");
 const reportsRouter = require("./src/routes/dailyReports");
+const cardiacRouter = require("./src/routes/cardiacRecords");
 const trainingsRouter = require("./src/routes/trainings");
 const sportsRouter = require("./src/routes/sports");
+const messagesRouter = require("./src/routes/messages");
 
 app.use("/users", usersRouter);
+app.use("/coachs", coachsRouter);
 app.use("/dailyReports", reportsRouter);
+app.use("/cardiacRecords", cardiacRouter);
 app.use("/trainings", trainingsRouter);
 app.use("/sports", sportsRouter);
+app.use("/messages", messagesRouter);
 
 app.set("views-engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
@@ -211,6 +217,7 @@ app.post("/register", async (req, res) => {
     role: req.body.role,
     civility: req.body.civility,
     email: req.body.email,
+    coachId: req.body.coachId,
     password: hashedPassword,
     condition: conditions[getRandom(0, 2)],
   });

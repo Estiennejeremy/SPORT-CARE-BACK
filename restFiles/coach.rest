@@ -1,0 +1,26 @@
+GET http://localhost:8000/coachs
+###
+
+GET http://localhost:8000/coachs/61603504a50318985782d674
+###
+
+POST http://localhost:8000/coachs
+Content-Type: application/json
+
+{
+    "userId": "60f443acbd84db7a98340826",
+    "description": "coach sportif"
+}
+
+###
+
+PATCH http://localhost:8000/coachs/61603504a50318985782d674
+Content-Type: application/json
+
+{
+    "description": "coach en seduction"
+}
+###
+
+DELETE http://localhost:8000/coachs/61603504a50318985782d674
+###

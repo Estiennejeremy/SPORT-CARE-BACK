@@ -1,0 +1,33 @@
+GET http://localhost:8000/cardiacRecords
+###
+
+GET http://localhost:8000/cardiacRecords/614dc1c49ec914fcc1b84766
+###
+
+
+
+GET http://localhost:8000/cardiacRecords/dailyReport/60f040742d263566d54ab2e6
+###
+
+
+POST http://localhost:8000/cardiacRecords
+Content-Type: application/json
+
+{
+    "dailyReportId": "60f040742d263566d54ab2e6",
+    "rmssd": 50,
+    "heartRate": 70
+}
+
+###
+
+PATCH http://localhost:8000/cardiacRecords/614dc1519ec91437fdb84765
+Content-Type: application/json
+
+{
+    "rmssd": 40
+}
+###
+
+DELETE http://localhost:8000/cardiacRecords/614dc1519ec91437fdb84765
+###

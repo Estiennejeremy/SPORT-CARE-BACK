@@ -1,7 +1,7 @@
 GET http://localhost:8000/sports
 ###
 
-GET http://localhost:8000/sports/60f1ac836f02c2a36996a520
+GET http://localhost:8000/sports/60f1aca16f02c2b0ab96a521
 ###
 
 

@@ -13,13 +13,18 @@ router.get('/', async (req, res) => {
   }
 })
 
+//Getting all for a user
+router.get ('/user/:id', getUserReports, (req, res) => {
+  try {
+    res.json(res.reports)
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }    
+})
+
 //Getting One
 router.get ('/:id', getReport, (req, res) => {
   res.json(res.report)
-})
-
-router.get ('/user/:id', getUserReports, (req, res) => {
-  res.json(res.reports)
 })
 
 // Creating one
@@ -102,7 +107,7 @@ async function getReport (req, res, next) {
 async function getUserReports (req, res, next) {
   let reports
   try {
-    reports = await reportModel.find({'id': req.params.UserId})
+    reports = await reportModel.find({'userId': req.params.UserId})
     if (reports == null) {
       return res.status(404).json({ message: 'Cannot find user'})
     }

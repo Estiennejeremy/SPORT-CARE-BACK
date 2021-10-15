@@ -4,6 +4,9 @@ GET http://localhost:8000/users
 GET http://localhost:8000/users/60cc68752f3cc4a32e1f9809
 ###
 
+GET http://localhost:8000/users/coach/60f1b59674af70801beba6e3
+###
+
 POST http://localhost:8000/register
 Content-Type: application/json
 
@@ -15,7 +18,8 @@ Content-Type: application/json
     "role": true,
     "civility": 1,
     "email": "jean.durand4@mail.fr",
-    "password": "azerty"
+    "password": "azerty",
+    "coachId": "61603504a50318985782d674"
 }
 ###
 
@@ -42,6 +46,15 @@ Content-Type: application/json
     "email": "jean2@mail.fr",
     "password": "azerty"
 }
+###
+
+PATCH http://localhost:8000/users/60f443acbd84db7a98340826
+Content-Type: application/json
+
+{
+    "coachId": "61603504a50318985782d674"
+}
+
 
 ###
 DELETE http://localhost:8000/users/60ba3cad96a985677d8113a7
