@@ -125,8 +125,29 @@ app.post("/login", async (req, res, next) => {
           expiresIn: "24h",
         });
 
+        const {
+          role,
+          civility,
+          _id,
+          lastName,
+          firstName,
+          email,
+          password,
+          userDate,
+          condition,
+        } = user;
+
         res.status(200).send({
-          jwt: token,
+          role,
+          civility,
+          _id,
+          lastName,
+          firstName,
+          email,
+          password,
+          userDate,
+          condition,
+          token,
         });
       } else {
         res.status(400).end(JSON.stringify({ message: "Wrong password" }));
@@ -137,21 +158,37 @@ app.post("/login", async (req, res, next) => {
   } else {
     res.status(400).end(JSON.stringify({ message: "Invalid request" }));
   }
-  // passport.authenticate("local", function (err, user, info) {
-  //   if (err) {
-  //     res.status(400).json(err);
-  //   }
-  //   if (!user) {
-  //     res.status(401).json({ message: "user not find!" });
-  //   }
-  //   req.logIn(user, function (err) {
-  //     if (err) {
-  //       res.status(402).json(err);
-  //     }
-  //     res.status(201).json(user);
-  //   });
-  // })(req, res, next);
 });
+
+app.post("/logout", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  if (req.headers.hasOwnProperty("jwt")) {
+    jwt.verify(req.headers.jwt, "RANDOM_TOKEN_SECRET", async (err, decoded) => {
+      if (err) {
+        res.status(400).end(JSON.stringify({ message: "Token expired" }));
+        return;
+      }
+      if (decoded.userId.length === 24) {
+        _id = decoded.userId;
+
+        const user = await userModel.findOne({ _id });
+
+        if (user) {
+          const token = jwt.sign({ userId: _id }, "RANDOM_TOKEN_SECRET", {
+            expiresIn: "1ms",
+          });
+          res.status(200).send({ jwt: token });
+        } else {
+          throw error;
+        }
+      } else {
+        res.status(400).end(JSON.stringify({ message: "Wrong token" }));
+      }
+    });
+  }
+});
+
+app.get("/s");
 
 app.delete("/logout", (req, res) => {
   req.logOut();
@@ -161,6 +198,10 @@ app.delete("/logout", (req, res) => {
 app.get("/register", checkNotAuthenticated, (req, res) => {
   res.render("register.ejs");
 });
+
+function getRandom(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
 //TO delete
 const conditions = ["good", "critical", "satisfactory"];
@@ -183,7 +224,36 @@ app.post("/register", async (req, res) => {
   });
   try {
     const newUser = await user.save();
-    res.status(201).json(newUser);
+    if (newUser) {
+      const token = jwt.sign({ userId: newUser._id }, "RANDOM_TOKEN_SECRET", {
+        expiresIn: "24h",
+      });
+
+      const {
+        role,
+        civility,
+        _id,
+        lastName,
+        firstName,
+        email,
+        password,
+        userDate,
+        condition,
+      } = newUser;
+
+      res.status(200).send({
+        role,
+        civility,
+        _id,
+        lastName,
+        firstName,
+        email,
+        password,
+        userDate,
+        condition,
+        token,
+      });
+    }
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

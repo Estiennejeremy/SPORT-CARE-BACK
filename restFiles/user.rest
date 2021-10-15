@@ -62,6 +62,5 @@ Content-Type: application/json
     "coachId": "61603504a50318985782d674"
 }
 
-
 ###
 DELETE http://localhost:8000/users/60ba3cad96a985677d8113a7

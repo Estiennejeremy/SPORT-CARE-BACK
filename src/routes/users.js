@@ -1,21 +1,38 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const userModel = require("../models/users");
 
 //Getting all
 router.get("/", async (req, res) => {
-  try {
-    const users = await userModel.find();
-    console.log(users);
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  res.setHeader("Content-Type", "application/json");
+  if (req.headers.hasOwnProperty("jwt")) {
+    jwt.verify(
+      req.headers.jwt,
+      "RANDOM_TOKEN_SECRET",
+      async function (err, decoded) {
+        if (err) {
+          res.status(400).end(JSON.stringify({ message: "Token expired" }));
+          return;
+        }
+        if (decoded.userId.length === 24) {
+          try {
+            const users = await user_model.find();
+            console.log("test users");
+            res.json(users);
+          } catch (err) {
+            res.status(500).json({ message: err.message });
+          }
+        }
+      }
+    );
   }
 });
 
 //Getting One
 router.get("/:id", getUser, (req, res) => {
+  console.log("test user");
   res.json(res.user);
 });
 
@@ -25,7 +42,7 @@ router.get("/coach/:id", getUser, (req, res) => {
     res.json(res.athletes);
   } catch (err) {
     res.status(500).json({ message: err.message });
-  }   
+  }
 });
 
 //Creating One
@@ -131,18 +148,18 @@ async function getUser(req, res, next) {
   next();
 }
 
-async function getCoachAthletes (req, res, next) {
-  let athletes
+async function getCoachAthletes(req, res, next) {
+  let athletes;
   try {
-    athletes = await userModel.find({'coachId': req.params.coachId})
+    athletes = await userModel.find({ coachId: req.params.coachId });
     if (reports == null) {
-      return res.status(404).json({ message: 'Cannot find athletes'})
+      return res.status(404).json({ message: "Cannot find athletes" });
     }
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    return res.status(500).json({ message: err.message });
   }
-  res.athletes = athletes
-  next()
+  res.athletes = athletes;
+  next();
 }
 
 module.exports = router;
