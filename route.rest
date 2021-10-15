@@ -1,7 +1,7 @@
 GET http://localhost:8000/users
 ###
 
-GET http://localhost:8000/users/60f1b59674af70801beba6e3
+GET http://localhost:8000/users/60cc68752f3cc4a32e1f9809
 ###
 
 POST http://localhost:8000/register

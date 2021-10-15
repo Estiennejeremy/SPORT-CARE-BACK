@@ -1,4 +1,5 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const user_model = require("../models/users");
@@ -6,17 +7,34 @@ const user_model = require("../models/users");
 
 //Getting all
 router.get("/", async (req, res) => {
-  try {
-    const users = await user_model.find();
-    console.log(users);
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  res.setHeader("Content-Type", "application/json");
+  if (req.headers.hasOwnProperty("jwt")) {
+    console.log("has jwt property");
+    jwt.verify(
+      req.headers.jwt,
+      "RANDOM_TOKEN_SECRET",
+      async function (err, decoded) {
+        if (err) {
+          res.status(400).end(JSON.stringify({ message: "Token expired" }));
+          return;
+        }
+        if (decoded.userId.length === 24) {
+          try {
+            const users = await user_model.find();
+            console.log("test users");
+            res.json(users);
+          } catch (err) {
+            res.status(500).json({ message: err.message });
+          }
+        }
+      }
+    );
   }
 });
 
 //Getting One
 router.get("/:id", getUser, (req, res) => {
+  console.log("test user");
   res.json(res.user);
 });
 
