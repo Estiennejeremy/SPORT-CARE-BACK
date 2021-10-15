@@ -8,7 +8,6 @@ const userModel = require("../models/users");
 router.get("/", async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   if (req.headers.hasOwnProperty("jwt")) {
-    console.log("has jwt property");
     jwt.verify(
       req.headers.jwt,
       "RANDOM_TOKEN_SECRET",
