@@ -5,6 +5,11 @@ GET http://localhost:8000/cardiacRecords/614dc1c49ec914fcc1b84766
 ###
 
 
+
+GET http://localhost:8000/cardiacRecords/dailyReport/60f040742d263566d54ab2e6
+###
+
+
 POST http://localhost:8000/cardiacRecords
 Content-Type: application/json
 

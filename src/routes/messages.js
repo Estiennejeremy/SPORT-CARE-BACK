@@ -13,6 +13,15 @@ router.get('/', async (req, res) => {
   }
 })
 
+//Getting all for a user
+router.get ('/user/:id', getUserMessages, (req, res) => {
+  try {
+    res.json(res.messages)
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }   
+})
+
 //Getting One
 router.get ('/:id', getMessage, (req, res) => {
   res.json(res.message)
@@ -74,6 +83,19 @@ async function getMessage (req, res, next) {
   next()
 }
 
+async function getUserMessages (req, res, next) {
+  let messages
+  try {
+    messages = await messageModel.find({'userId': req.params.id})
+    if (messages == null) {
+      return res.status(404).json({ message: 'Cannot find user'})
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message })
+  }
+  res.messages = messages
+  next()
+}
 
 
 

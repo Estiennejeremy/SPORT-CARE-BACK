@@ -51,6 +51,7 @@ const userSchema = new mongoose.Schema({
   condition: {
     type: String,
     required: true,
+    default: 0
   },
 });
 

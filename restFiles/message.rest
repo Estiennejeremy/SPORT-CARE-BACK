@@ -4,6 +4,8 @@ GET http://localhost:8000/messages
 GET http://localhost:8000/messages/614dea23d24e9528094b7558
 ###
 
+GET http://localhost:8000/messages/user/60f1b59674af70801beba6e3
+###
 
 POST http://localhost:8000/messages
 Content-Type: application/json
