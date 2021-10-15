@@ -1,7 +1,7 @@
 GET http://localhost:8000/users
 ###
 
-GET http://localhost:8000/users/60cc68752f3cc4a32e1f9809
+GET http://localhost:8000/users/61693184aad9f75696aa46ad
 ###
 
 GET http://localhost:8000/users/coach/60f1b59674af70801beba6e3
@@ -11,15 +11,29 @@ POST http://localhost:8000/register
 Content-Type: application/json
 
 {
-    "lastName": "Durand",
-    "firstName": "Jean",
-    "birthdate": "1990-07-18T14:16:42.840+00:00",
-    "address": "13006 Marseille Avenue du Prado",
-    "role": true,
+    "lastName": "Inshape",
+    "firstName": "Tibo",
+    "birthdate": "1995-01-01",
+    "address": "2-4 Rue Philippe Lebon, 81000 Albi",
     "civility": 1,
-    "email": "jean.durand4@mail.fr",
+    "email": "tibo.inshape@gmail.com",
     "password": "azerty",
-    "coachId": "61603504a50318985782d674"
+    "coachId": ""
+}
+###
+
+POST http://localhost:8000/register
+Content-Type: application/json
+
+{
+    "lastName": "butin",
+    "firstName": "jeremy",
+    "birthdate": "1997-01-01",
+    "address": "",
+    "civility": 1,
+    "email": "jeremy.butin@epitech.eu",
+    "password": "azerty",
+    "coachId": "61693184aad9f75696aa46ad"
 }
 ###
 
@@ -33,18 +47,11 @@ Content-Type: application/json
 }
 ###
 
-PATCH http://localhost:8000/users/6082bba64bd4b035736998e8
+PATCH http://localhost:8000/users/61693184aad9f75696aa46ad
 Content-Type: application/json
 
 {
-    "lastName": "Durand",
-    "firstName": "Jean",
-    "birthdate": "1990-06-25",
-    "address": "13006 Marseille Avenue du Prado",
-    "role": false,
-    "civility": 0,
-    "email": "jean2@mail.fr",
-    "password": "azerty"
+    "coachId": "61693184aad9f75696aa46ad"
 }
 ###
 

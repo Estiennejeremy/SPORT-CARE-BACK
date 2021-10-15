@@ -112,6 +112,9 @@ router.patch("/:id", getUser, async (req, res) => {
   if (req.body.condition != null) {
     res.user.condition = req.body.condition;
   }
+  if (req.body.coachId != null) {
+    res.user.coachId = req.body.coachId;
+  }
 
   try {
     const updatedUser = await res.user.save();
