@@ -1,122 +1,119 @@
-const express = require ('express')
-const router = express.Router()
-const reportModel = require('../models/dailyReports')
-
+const express = require("express");
+const router = express.Router();
+const reportModel = require("../models/dailyReports");
 
 //Getting all
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const reports = await reportModel.find()
-    res.json(reports)
+    const reports = await reportModel.find();
+    res.json(reports);
   } catch (err) {
-    res.status(500).json({ message: err.message })
+    res.status(500).json({ message: err.message });
   }
-})
+});
 
 //Getting all for a user
-router.get ('/user/:id', getUserReports, (req, res) => {
+router.get("/user/:userId", getUserReports, (req, res) => {
   try {
-    res.json(res.reports)
+    res.json(res.reports);
   } catch (err) {
-    res.status(500).json({ message: err.message })
-  }    
-})
+    res.status(500).json({ message: err.message });
+  }
+});
 
 //Getting One
-router.get ('/:id', getReport, (req, res) => {
-  res.json(res.report)
-})
+router.get("/:id", getReport, (req, res) => {
+  res.json(res.report);
+});
 
 // Creating one
-router.post ('/', async (req, res) => {
-  const report = new reportModel ({
-    UserId: req.body.UserId,
-    DailyFeelings: req.body.DailyFeelings,
-    Size: req.body.Size,
-    Weight: req.body.Weight,
-    Rmssd: req.body.Rmssd,
-    Mhr: req.body.Mhr,
-    Bmi: req.body.Bmi,
-  })
+router.post("/", async (req, res) => {
+  const report = new reportModel({
+    userId: req.body.userId,
+    dailyFeelings: req.body.dailyFeelings,
+    size: req.body.size,
+    weight: req.body.weight,
+    rmssd: req.body.rmssd,
+    mhr: req.body.mhr,
+    bmi: req.body.bmi,
+  });
+  console.log(`report`, report);
   try {
     const newReport = await report.save();
     res.status(201).json(newReport);
   } catch (err) {
-    res.status(400).json({ message: err.message })
+    res.status(400).json({ message: err.message });
   }
-})
+});
 
 //Updating One
-router.patch ('/:id', getReport, async (req, res) => {
-  if (req.body.UserId != null) {
-    res.report.UserId = req.body.UserId
+router.patch("/:id", getReport, async (req, res) => {
+  if (req.body.userId != null) {
+    res.report.userId = req.body.userId;
   }
-  if (req.body.DailyFeelings != null) {
-    res.report.DailyFeelings = req.body.DailyFeelings
+  if (req.body.dailyFeelings != null) {
+    res.report.dailyFeelings = req.body.dailyFeelings;
   }
-  if (req.body.Size != null) {
-    res.report.Size = req.body.Size
+  if (req.body.size != null) {
+    res.report.size = req.body.size;
   }
-  if (req.body.Weight != null) {
-    res.report.Weight = req.body.Weight
+  if (req.body.weight != null) {
+    res.report.weight = req.body.weight;
   }
-  if (req.body.Rmssd != null) {
-    res.report.Rmssd = req.body.Rmssd
+  if (req.body.rmssd != null) {
+    res.report.rmssd = req.body.rmssd;
   }
-  if (req.body.Mhr != null) {
-    res.report.Mhr = req.body.Mhr
+  if (req.body.mhr != null) {
+    res.report.mhr = req.body.mhr;
   }
-  if (req.body.Bmi != null) {
-    res.report.Bmi = req.body.Bmi
+  if (req.body.bmi != null) {
+    res.report.bmi = req.body.bmi;
   }
 
   try {
-    const updatedReport = await res.report.save()
-    res.json(updatedReport)
+    const updatedReport = await res.report.save();
+    res.json(updatedReport);
   } catch (err) {
-    res.status(400).json({ message: err.message })
+    res.status(400).json({ message: err.message });
   }
-})
+});
 
 //Deleting One
-router.delete ('/:id', getReport, async (req, res) => {
+router.delete("/:id", getReport, async (req, res) => {
   try {
-    await res.report.remove()
-    res.json ({ message: 'Report deleted.' })
+    await res.report.remove();
+    res.json({ message: "Report deleted." });
   } catch (err) {
-    res.status(500).json({ message: err.message })
+    res.status(500).json({ message: err.message });
   }
-})
+});
 
-
-async function getReport (req, res, next) {
-  let report
+async function getReport(req, res, next) {
+  let report;
   try {
-    report = await reportModel.findById(req.params.id)
+    report = await reportModel.findById(req.params.id);
     if (report == null) {
-      return res.status(404).json({ message: 'Cannot find report'})
+      return res.status(404).json({ message: "Cannot find report" });
     }
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    return res.status(500).json({ message: err.message });
   }
-  res.report = report
-  next()
+  res.report = report;
+  next();
 }
 
-
-async function getUserReports (req, res, next) {
-  let reports
+async function getUserReports(req, res, next) {
+  let reports;
   try {
-    reports = await reportModel.find({'userId': req.params.UserId})
+    reports = await reportModel.find({ userId: req.params.userId });
     if (reports == null) {
-      return res.status(404).json({ message: 'Cannot find user'})
+      return res.status(404).json({ message: "Cannot find user" });
     }
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    return res.status(500).json({ message: err.message });
   }
-  res.reports = reports
-  next()
+  res.reports = reports;
+  next();
 }
 
-
-module.exports = router
+module.exports = router;

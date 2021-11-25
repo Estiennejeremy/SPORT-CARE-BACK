@@ -1,5 +1,7 @@
 FROM node:10-slim
 
+RUN npm install -g nodemon
+
 # Set to a non-root built-in user `node`
 USER node
 
@@ -23,4 +25,4 @@ COPY --chown=node . .
 ENV HOST=0.0.0.0 PORT=8000
 
 EXPOSE ${PORT}
-CMD [ "node", "index.js"]
+CMD [ "nodemon", "-L", "index.js"]
