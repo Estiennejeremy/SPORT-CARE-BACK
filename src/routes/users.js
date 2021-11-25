@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const userModel = require("../models/users");
+const checkNotAuthenticated = require("../../index");
 
 //Getting all
 router.get("/", async (req, res) => {
@@ -18,7 +19,7 @@ router.get("/", async (req, res) => {
         }
         if (decoded.userId.length === 24) {
           try {
-            const users = await user_model.find();
+            const users = await userModel.find();
             console.log("test users");
             res.json(users);
           } catch (err) {
@@ -43,44 +44,6 @@ router.get("/coach/:id", getUser, (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-});
-
-//Creating One
-/*
-router.post ('/register', checkNotAuthenticated, async (req, res) => {
-  const hashedPassword = await bcrypt.hash(req.body.Password, 10)
-  const user = new userModel ({
-    Last_name: req.body.Last_name,
-    First_name: req.body.First_name,
-    Birthdate: req.body.Birthdate,
-    address: req.body.address,
-    Role: req.body.Role,
-    Civility: req.body.Civility,
-    email: req.body.email,
-    Password: hashedPassword
-  })
-  try {
-    const newUser = await user.save()
-    res.status(201).json(newUser)
-  } catch (err) {
-    res.status(400).json({ message: err.message })
-  }
-})
-*/
-
-//Connection
-router.post("/login", async (req, res) => {
-  console.log(req.body);
-  // const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  // const user = new user_model({
-  //   login: req.body.email,
-  //   password: hashedPassword,
-  // });
-  // try {
-  //   //Check if user exist un password il true
-  // } catch (err) {
-  //   res.status(400).json({ message: err.message });
-  // }
 });
 
 //Updating One

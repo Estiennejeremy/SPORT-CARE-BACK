@@ -101,6 +101,8 @@ function checkNotAuthenticated(req, res, next) {
   next();
 }
 
+module.exports = checkNotAuthenticated;
+
 app.get("/", checkAuthenticated, (req, res) => {
   res.render("index.ejs", { name: req.user.firstName });
 });
@@ -220,7 +222,7 @@ app.post("/register", async (req, res) => {
     email: req.body.email,
     coachId: req.body.coachId,
     password: hashedPassword,
-    condition: "good"
+    condition: "good",
   });
   try {
     const newUser = await user.save();
