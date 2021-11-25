@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const userModel = require("../models/users");
+const checkNotAuthenticated = require("../../index");
 
 //Getting all
 router.get("/", async (req, res) => {
@@ -18,8 +19,7 @@ router.get("/", async (req, res) => {
         }
         if (decoded.userId.length === 24) {
           try {
-            const users = await user_model.find();
-            console.log("test users");
+            const users = await userModel.find();
             res.json(users);
           } catch (err) {
             res.status(500).json({ message: err.message });
@@ -32,55 +32,16 @@ router.get("/", async (req, res) => {
 
 //Getting One
 router.get("/:id", getUser, (req, res) => {
-  console.log("test user");
   res.json(res.user);
 });
 
-//Getting all atheletes for a coach
-router.get("/coach/:id", getUser, (req, res) => {
+//Getting all athletes for a coach
+router.get("/coach/:coachId", getCoachAthletes, (req, res) => {
   try {
     res.json(res.athletes);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-});
-
-//Creating One
-/*
-router.post ('/register', checkNotAuthenticated, async (req, res) => {
-  const hashedPassword = await bcrypt.hash(req.body.Password, 10)
-  const user = new userModel ({
-    Last_name: req.body.Last_name,
-    First_name: req.body.First_name,
-    Birthdate: req.body.Birthdate,
-    address: req.body.address,
-    Role: req.body.Role,
-    Civility: req.body.Civility,
-    email: req.body.email,
-    Password: hashedPassword
-  })
-  try {
-    const newUser = await user.save()
-    res.status(201).json(newUser)
-  } catch (err) {
-    res.status(400).json({ message: err.message })
-  }
-})
-*/
-
-//Connection
-router.post("/login", async (req, res) => {
-  console.log(req.body);
-  // const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  // const user = new user_model({
-  //   login: req.body.email,
-  //   password: hashedPassword,
-  // });
-  // try {
-  //   //Check if user exist un password il true
-  // } catch (err) {
-  //   res.status(400).json({ message: err.message });
-  // }
 });
 
 //Updating One
@@ -152,7 +113,7 @@ async function getCoachAthletes(req, res, next) {
   let athletes;
   try {
     athletes = await userModel.find({ coachId: req.params.coachId });
-    if (reports == null) {
+    if (athletes.length === 0) {
       return res.status(404).json({ message: "Cannot find athletes" });
     }
   } catch (err) {
