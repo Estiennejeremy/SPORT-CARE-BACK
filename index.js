@@ -11,6 +11,8 @@ const errorhandler = require("errorhandler");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const app = express();
+const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require("./swagger-output.json");
 
 const initializePassport = require("./passport-config");
 initializePassport(
@@ -62,6 +64,7 @@ app.use("/cardiacRecords", cardiacRouter);
 app.use("/trainings", trainingsRouter);
 app.use("/sports", sportsRouter);
 app.use("/messages", messagesRouter);
+app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.set("views-engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
