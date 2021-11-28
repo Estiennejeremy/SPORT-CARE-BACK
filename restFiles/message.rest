@@ -1,35 +1,24 @@
 GET http://localhost:8000/messages
 ###
 
-GET http://localhost:8000/messages/614dea23d24e9528094b7558
+GET http://localhost:8000/messages/61a399e8259f509fa609285e
 ###
 
-GET http://localhost:8000/messages/user/60f1b59674af70801beba6e3
+GET http://localhost:8000/messages/conversation/61a0f19fe649b274f73b8ca0
 ###
 
-POST http://localhost:8000/messages
+POST http://localhost:8000/messages/
 Content-Type: application/json
 
 {
+    "conversationId" : "61a0f19fe649b274f73b8ca0",
     "userId": "616932566854306e86c2ca0e",
-    "userIdRecever": "61693184aad9f75696aa46ad",
     "message": "Mes performences sont bonnes?"
 
 }
 ###
 
-POST http://localhost:8000/messages
-Content-Type: application/json
-
-{
-    "userId": "61693184aad9f75696aa46ad",
-    "userIdRecever": "616932566854306e86c2ca0e",
-    "message": "Excellents, continue comme ça!"
-
-}
-###
-
-PATCH http://localhost:8000/messages/615ffe2fd3c76326ff7d5188
+PATCH http://localhost:8000/messages/61a398b6259f500b1e092854/
 Content-Type: application/json
 
 {
@@ -37,5 +26,5 @@ Content-Type: application/json
 }
 ###
 
-DELETE http://localhost:8000/messages/614de9e9d24e956d094b7557
+DELETE http://localhost:8000/messages/61a398b6259f500b1e092854/
 ###
