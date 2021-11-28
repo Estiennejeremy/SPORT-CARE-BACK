@@ -1,0 +1,21 @@
+GET http://localhost:8000/conversations
+###
+
+GET http://localhost:8000/conversations/61a0f19fe649b274f73b8ca0
+###
+
+GET http://localhost:8000/conversations/user/616932566854306e86c2ca0e
+###
+
+GET http://localhost:8000/conversations/users/616932566854306e86c2ca0e/61693184aad9f75696aa46ad
+###
+
+POST http://localhost:8000/conversations/
+Content-Type: application/json
+
+{
+    "senderId": "616932566854306e86c2ca0e",
+    "receiverId": "61693184aad9f75696aa46ad"
+}
+###
+

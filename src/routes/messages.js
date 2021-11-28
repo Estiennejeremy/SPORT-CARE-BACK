@@ -13,7 +13,17 @@ router.get('/', async (req, res) => {
   }
 })
 
-//Getting all for a user
+//Getting one
+router.get ('/:id', getMessage, (req, res) => {
+  try {
+    res.json(res.message)
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }   
+})
+
+
+//Getting all messages for a user
 router.get ('/user/:id', getUserMessages, (req, res) => {
   try {
     res.json(res.messages)
@@ -22,9 +32,15 @@ router.get ('/user/:id', getUserMessages, (req, res) => {
   }   
 })
 
-//Getting One
-router.get ('/:id', getMessage, (req, res) => {
-  res.json(res.message)
+
+
+//Getting all for a conversation
+router.get ('/conversation/:conversationId', getConversationMessages, (req, res) => {
+  try {
+    res.json(res.messages)
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }   
 })
 
 
@@ -32,7 +48,7 @@ router.get ('/:id', getMessage, (req, res) => {
 router.post ('/', async (req, res) => {
   const message = new messageModel ({
     userId: req.body.userId,
-    userIdRecever: req.body.userIdRecever,
+    conversationId: req.body.conversationId,
     message: req.body.message,
     date: req.body.date,
   })
@@ -89,6 +105,20 @@ async function getUserMessages (req, res, next) {
     messages = await messageModel.find({'userId': req.params.id})
     if (messages == null) {
       return res.status(404).json({ message: 'Cannot find user'})
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message })
+  }
+  res.messages = messages
+  next()
+}
+
+async function getConversationMessages (req, res, next) {
+  let messages
+  try {
+    messages = await messageModel.find({'conversationId': req.params.conversationId})
+    if (messages == null) {
+      return res.status(404).json({ message: 'Cannot find conversation'})
     }
   } catch (err) {
     return res.status(500).json({ message: err.message })
