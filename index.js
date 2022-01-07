@@ -128,9 +128,13 @@ app.post("/login", async (req, res, next) => {
       // And, if is valid password,
       if (bcrypt.compareSync(password, user.password)) {
         // We create a new brand jwt token
-        const token = jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", {
-          expiresIn: "24h",
-        });
+        const token = jwt.sign(
+          { userId: user._id },
+          process.env.SESSION_SECRET,
+          {
+            expiresIn: "24h",
+          }
+        );
 
         const {
           role,
@@ -168,30 +172,17 @@ app.post("/login", async (req, res, next) => {
 });
 
 app.post("/logout", (req, res) => {
-  res.setHeader("Content-Type", "application/json");
-  if (req.headers.hasOwnProperty("jwt")) {
-    jwt.verify(req.headers.jwt, "RANDOM_TOKEN_SECRET", async (err, decoded) => {
-      if (err) {
-        res.status(400).end(JSON.stringify({ message: "Token expired" }));
-        return;
-      }
-      if (decoded.userId.length === 24) {
-        _id = decoded.userId;
+  _id = decoded.userId;
 
-        const user = await userModel.findOne({ _id });
+  const user = await userModel.findOne({ _id });
 
-        if (user) {
-          const token = jwt.sign({ userId: _id }, "RANDOM_TOKEN_SECRET", {
-            expiresIn: "1ms",
-          });
-          res.status(200).send({ jwt: token });
-        } else {
-          throw error;
-        }
-      } else {
-        res.status(400).end(JSON.stringify({ message: "Wrong token" }));
-      }
+  if (user) {
+    const token = jwt.sign({ userId: _id }, process.env.SESSION_SECRET, {
+      expiresIn: "1ms",
     });
+    res.status(200).send({ jwt: token });
+  } else {
+    throw error;
   }
 });
 
@@ -232,9 +223,13 @@ app.post("/register", async (req, res) => {
   try {
     const newUser = await user.save();
     if (newUser) {
-      const token = jwt.sign({ userId: newUser._id }, "RANDOM_TOKEN_SECRET", {
-        expiresIn: "24h",
-      });
+      const token = jwt.sign(
+        { userId: newUser._id },
+        process.env.SESSION_SECRET,
+        {
+          expiresIn: "24h",
+        }
+      );
 
       const {
         role,

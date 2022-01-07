@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const reportModel = require("../models/dailyReports");
+const authentication = require("../middlewares/authentication");
 
 //Getting all
-router.get("/", async (req, res) => {
+router.get("/", authentication.checkTokenMiddleware, async (req, res) => {
   try {
     const reports = await reportModel.find();
     res.json(reports);
@@ -13,21 +14,29 @@ router.get("/", async (req, res) => {
 });
 
 //Getting all for a user
-router.get("/user/:userId", getUserReports, (req, res) => {
-  try {
-    res.json(res.reports);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+router.get(
+  "/user/:userId",
+  [authentication.checkTokenMiddleware, getUserReports],
+  (req, res) => {
+    try {
+      res.json(res.reports);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
   }
-});
+);
 
 //Getting One
-router.get("/:id", getReport, (req, res) => {
-  res.json(res.report);
-});
+router.get(
+  "/:id",
+  [authentication.checkTokenMiddleware, getReport],
+  (req, res) => {
+    res.json(res.report);
+  }
+);
 
 // Creating one
-router.post("/", async (req, res) => {
+router.post("/", authentication.checkTokenMiddleware, async (req, res) => {
   const report = new reportModel({
     userId: req.body.userId,
     dailyFeelings: req.body.dailyFeelings,
@@ -47,46 +56,54 @@ router.post("/", async (req, res) => {
 });
 
 //Updating One
-router.patch("/:id", getReport, async (req, res) => {
-  if (req.body.userId != null) {
-    res.report.userId = req.body.userId;
-  }
-  if (req.body.dailyFeelings != null) {
-    res.report.dailyFeelings = req.body.dailyFeelings;
-  }
-  if (req.body.size != null) {
-    res.report.size = req.body.size;
-  }
-  if (req.body.weight != null) {
-    res.report.weight = req.body.weight;
-  }
-  if (req.body.rmssd != null) {
-    res.report.rmssd = req.body.rmssd;
-  }
-  if (req.body.mhr != null) {
-    res.report.mhr = req.body.mhr;
-  }
-  if (req.body.bmi != null) {
-    res.report.bmi = req.body.bmi;
-  }
+router.patch(
+  "/:id",
+  [authentication.checkTokenMiddleware, getReport],
+  async (req, res) => {
+    if (req.body.userId != null) {
+      res.report.userId = req.body.userId;
+    }
+    if (req.body.dailyFeelings != null) {
+      res.report.dailyFeelings = req.body.dailyFeelings;
+    }
+    if (req.body.size != null) {
+      res.report.size = req.body.size;
+    }
+    if (req.body.weight != null) {
+      res.report.weight = req.body.weight;
+    }
+    if (req.body.rmssd != null) {
+      res.report.rmssd = req.body.rmssd;
+    }
+    if (req.body.mhr != null) {
+      res.report.mhr = req.body.mhr;
+    }
+    if (req.body.bmi != null) {
+      res.report.bmi = req.body.bmi;
+    }
 
-  try {
-    const updatedReport = await res.report.save();
-    res.json(updatedReport);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+    try {
+      const updatedReport = await res.report.save();
+      res.json(updatedReport);
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
   }
-});
+);
 
 //Deleting One
-router.delete("/:id", getReport, async (req, res) => {
-  try {
-    await res.report.remove();
-    res.json({ message: "Report deleted." });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+router.delete(
+  "/:id",
+  [authentication.checkTokenMiddleware, getReport],
+  async (req, res) => {
+    try {
+      await res.report.remove();
+      res.json({ message: "Report deleted." });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
   }
-});
+);
 
 async function getReport(req, res, next) {
   let report;
