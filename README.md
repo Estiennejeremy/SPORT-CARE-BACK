@@ -12,10 +12,6 @@
 
 `docker-compose up --build -d`
 
-### client mongo
-
-`docker-compose exec my-mongoclient /bin/sh`
-
 ### Use the app
 
 - The app is running at : `localhost:8000`

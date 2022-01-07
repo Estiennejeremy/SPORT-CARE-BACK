@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const trainingModel = require("../models/trainings");
+const authentication = require("../middlewares/authentication");
 
 //Getting all
-router.get("/", async (req, res) => {
+router.get("/", authentication.checkTokenMiddleware, async (req, res) => {
   try {
     const trainings = await trainingModel.find();
     res.json(trainings);
@@ -13,16 +14,24 @@ router.get("/", async (req, res) => {
 });
 
 //Getting One
-router.get("/:id", getTraining, (req, res) => {
-  res.json(res.training);
-});
+router.get(
+  "/:id",
+  [authentication.checkTokenMiddleware, getTraining],
+  (req, res) => {
+    res.json(res.training);
+  }
+);
 
-router.get("/user/:id", getUserTrainings, (req, res) => {
-  res.json(res.trainings);
-});
+router.get(
+  "/user/:id",
+  [authentication.checkTokenMiddleware, getUserTrainings],
+  (req, res) => {
+    res.json(res.trainings);
+  }
+);
 
 // Creating one
-router.post("/", async (req, res) => {
+router.post("/", authentication.checkTokenMiddleware, async (req, res) => {
   const training = new trainingModel({
     userId: req.body.userId,
     date: req.body.date,
@@ -40,40 +49,48 @@ router.post("/", async (req, res) => {
 });
 
 //Updating One
-router.patch("/:id", getTraining, async (req, res) => {
-  if (req.body.userId != null) {
-    res.training.userId = req.body.userId;
-  }
-  if (req.body.effort != null) {
-    res.training.effort = req.body.effort;
-  }
-  if (req.body.recap != null) {
-    res.training.recap = req.body.recap;
-  }
-  if (req.body.duration != null) {
-    res.training.duration = req.body.duration;
-  }
-  if (req.body.sportID != null) {
-    res.training.sportID = req.body.sportID;
-  }
+router.patch(
+  "/:id",
+  [authentication.checkTokenMiddleware, getTraining],
+  async (req, res) => {
+    if (req.body.userId != null) {
+      res.training.userId = req.body.userId;
+    }
+    if (req.body.effort != null) {
+      res.training.effort = req.body.effort;
+    }
+    if (req.body.recap != null) {
+      res.training.recap = req.body.recap;
+    }
+    if (req.body.duration != null) {
+      res.training.duration = req.body.duration;
+    }
+    if (req.body.sportID != null) {
+      res.training.sportID = req.body.sportID;
+    }
 
-  try {
-    const updatedTraining = await res.training.save();
-    res.json(updatedTraining);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+    try {
+      const updatedTraining = await res.training.save();
+      res.json(updatedTraining);
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
   }
-});
+);
 
 //Deleting One
-router.delete("/:id", getTraining, async (req, res) => {
-  try {
-    await res.training.remove();
-    res.json({ message: "Training deleted." });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+router.delete(
+  "/:id",
+  [authentication.checkTokenMiddleware, getTraining],
+  async (req, res) => {
+    try {
+      await res.training.remove();
+      res.json({ message: "Training deleted." });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
   }
-});
+);
 
 async function getTraining(req, res, next) {
   let training;
