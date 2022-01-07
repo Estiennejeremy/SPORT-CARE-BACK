@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const cardiacModel = require("../models/cardiacRecords");
+const IaClient = require("../services/ia-client");
+const reportModel = require("../models/dailyReports");
 
 //Getting all
 router.get("/", async (req, res) => {
@@ -32,15 +34,31 @@ router.get("/dailyReport/:id", getReportCardiacRecords, (req, res) => {
 
 // Creating one
 router.post("/", async (req, res) => {
+  const  allRm = []
+  let status = null;
+  const allModels = reportModel.find();
+  const fiveLastRmssd = (await allModels).filter(model => model.rmssd).slice(Math.max(allModels.length - 5, 0))
+  console.log(fiveLastRmssd)
+  rmssd = await IaClient.getRmssd(req.body.hrData);
+  if(fiveLastRmssd.length >= 4) {
+   
+    for(const item of fiveLastRmssd) {
+      allRm.push(item.rmssd);
+    }
+    allRm.push(rmssd)
+   status = await IaClient.getState(allRm)
+  }
+  const average = req.body.hrData.reduce((a, b) => a + b) / req.body.hrData.length;
   const cardiacRecord = new cardiacModel({
     dailyReportId: req.body.dailyReportId,
-    rmssd: req.body.rmssd,
-    heartRate: req.body.heartRate,
+    rmssd: rmssd,
+    heartRate: average,
     hrData: req.body.hrData,
+    currentStatus: status
   });
   try {
     const newCardiacRecord = await cardiacRecord.save();
-    res.status(201).json(newCardiacRecord);
+    gares.status(201).json(newCardiacRecord);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -105,5 +123,7 @@ async function getReportCardiacRecords(req, res, next) {
   res.cardiacRecords = cardiacRecords;
   next();
 }
+
+
 
 module.exports = router;
