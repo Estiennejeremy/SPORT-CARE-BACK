@@ -57,6 +57,7 @@ const trainingsRouter = require("./src/routes/trainings");
 const sportsRouter = require("./src/routes/sports");
 const conversationsRouter = require("./src/routes/conversations");
 const messagesRouter = require("./src/routes/messages");
+const authentication = require("./src/middlewares/authentication");
 
 app.use("/users", usersRouter);
 app.use("/coachs", coachsRouter);
@@ -122,7 +123,7 @@ app.post("/login", async (req, res, next) => {
   if (req.body.hasOwnProperty("email") && req.body.hasOwnProperty("password")) {
     const email = req.body.email;
     const password = req.body.password;
-    user = await userModel.findOne({ email });
+    const user = await userModel.findOne({ email });
     // If user email exists in DB, ...
     if (user) {
       // And, if is valid password,
@@ -171,8 +172,13 @@ app.post("/login", async (req, res, next) => {
   }
 });
 
-app.post("/logout", async (req, res) => {
-  _id = decoded.userId;
+app.post("/logout", authentication.checkTokenMiddleware, async (req, res) => {
+  const token = authentication.extractBearerToken(req.headers.authorization);
+  console.log(`_id`, token);
+  const decodedJWT = jwt.decode(token, process.env.SESSION_SECRET);
+  console.log(`decodedJWT`, decodedJWT);
+
+  const _id = decodedJWT.userId;
 
   const user = await userModel.findOne({ _id });
 
@@ -180,7 +186,7 @@ app.post("/logout", async (req, res) => {
     const token = jwt.sign({ userId: _id }, process.env.SESSION_SECRET, {
       expiresIn: "1ms",
     });
-    res.status(200).send({ jwt: token });
+    res.status(200).append("Authorization", `Bearer ${token}`).send({});
   } else {
     throw error;
   }
