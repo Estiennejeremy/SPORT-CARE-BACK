@@ -171,7 +171,7 @@ app.post("/login", async (req, res, next) => {
   }
 });
 
-app.post("/logout", (req, res) => {
+app.post("/logout", async (req, res) => {
   _id = decoded.userId;
 
   const user = await userModel.findOne({ _id });
