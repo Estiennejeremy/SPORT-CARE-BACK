@@ -27,6 +27,11 @@ const cardiacSchema = new mongoose.Schema({
     required: false,
     default: null,
   },
+  currentStatus: {
+    type: [Number],
+    required: false,
+    default: null,
+  },
 });
 
 module.exports = mongoose.model("cardiacRecords", cardiacSchema);
