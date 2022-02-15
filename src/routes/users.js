@@ -65,7 +65,8 @@ router.patch(
       res.user.civility = req.body.civility;
     }
     if (req.body.password != null) {
-      res.user.password = req.body.password;
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      res.user.password = hashedPassword;
     }
     if (req.body.condition != null) {
       res.user.condition = req.body.condition;
