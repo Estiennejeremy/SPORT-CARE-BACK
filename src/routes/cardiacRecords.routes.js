@@ -1,8 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const cardiacModel = require("../models/cardiacRecords.model");
-const IaClient = require("../services/ia-client");
-const reportModel = require("../models/dailyReports.model");
 const authentication = require("../middlewares/authentication");
 const cardiacRecordsController = require("../controllers/cardiacRecords.controller");
 
@@ -63,6 +60,7 @@ router.patch(
     cardiacRecordsController.update(req, res).then((cardiacRecord) => {
       res.json(cardiacRecord);
     }).catch((err) => {
+      console.log(err.stack);
       res.status(400).json({ message: err.message });
     });
   }
