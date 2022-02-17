@@ -1,6 +1,6 @@
 ## Sport-care-front
 
-[![docker-compose-actions-workflow](https://github.com/EpitechMscPro2020/SPORT-CARE-FRONT/actions/workflows/push.yml/badge.svg)](https://github.com/EpitechMscPro2020/SPORT-CARE-BACK/actions/workflows/push.yml)
+[![docker-compose-actions-workflow](https://github.com/EpitechMscPro2020/SPORT-CARE-BACK/actions/workflows/push.yml/badge.svg)](https://github.com/EpitechMscPro2020/SPORT-CARE-BACK/actions/workflows/push.yml)
 
 ## How to start the project ?
 
