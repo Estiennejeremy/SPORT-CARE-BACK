@@ -105,6 +105,29 @@ router.delete(
   }
 );
 
+//Getting last report for a user
+router.get("/last/:userId", getUserLastReport, (req, res) => {
+  try {
+    res.json(res.reports);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+async function getUserLastReport(req, res, next) {
+  let reports;
+  try {
+    reports = await reportModel.find({ userId: req.params.userId });
+    if (reports == null) {
+      return res.status(404).json({ message: "Cannot find user" });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+  res.reports = reports[reports.length - 1];
+  next();
+}
+
 async function getReport(req, res, next) {
   let report;
   try {
