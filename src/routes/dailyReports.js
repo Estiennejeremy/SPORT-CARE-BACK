@@ -26,6 +26,16 @@ router.get("/:id", getReport, (req, res) => {
   res.json(res.report);
 });
 
+//Get one with date
+router.get("/date/:userId", getReportWithDate, (req, res) => {
+  res.json(res.report);
+});
+
+//getReportLast5Days
+router.get("/dateMinus5/:userId", getReportLast5Days, (req, res) => {
+  res.json(res.report);
+});
+
 // Creating one
 router.post("/", async (req, res) => {
   const report = new reportModel({
@@ -99,6 +109,59 @@ async function getReport(req, res, next) {
     return res.status(500).json({ message: err.message });
   }
   res.report = report;
+  next();
+}
+
+async function getReportLast5Days(req, res, next) {
+  let reports
+  try {
+    var dmin = new Date();
+    dmin.setDate(dmin.getDate() - 6);
+    dmin.setHours(0);
+    dmin.setMinutes(0);
+    dmin.setSeconds(0);
+
+    var dmax = new Date().setDate(dmin.getDate() + 5);
+
+    reports = await reportModel.find({
+      "userId": {
+        "$eq": req.params.userId
+      },
+      "date": {
+        "$gt": dmin,
+        "$lt": dmax
+      }
+    })
+
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+  res.report = reports.sort((a, b) => a.date - b.date);
+  next();
+}
+
+async function getReportWithDate(req, res, next) {
+  let _report
+  try {
+    var d = new Date();
+    d.setHours(0);
+    d.setMinutes(0);
+    d.setSeconds(0);
+
+    _report = await reportModel.find({
+      "userId": {
+        "$eq": req.params.userId
+      },
+      "date": {
+        "$gt": d
+      }
+    })
+
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+
+  res.report = _report;
   next();
 }
 
