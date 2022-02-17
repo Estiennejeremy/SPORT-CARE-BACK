@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const reportModel = require("../models/dailyReports");
+const reportModel = require("../models/dailyReports.model");
 const authentication = require("../middlewares/authentication");
 
 //Getting all

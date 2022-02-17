@@ -1,9 +1,8 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
-const bcrypt = require("bcrypt");
-const userModel = require("../models/users");
-const checkNotAuthenticated = require("../../index");
+const bcrypt = require("bcryptjs");
+const userModel = require("../models/users.model");
 const authentication = require("../middlewares/authentication");
 
 //Getting all

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const sportModel = require("../models/sports");
+const sportModel = require("../models/sports.model");
 const authentication = require("../middlewares/authentication");
 
 //Getting all
