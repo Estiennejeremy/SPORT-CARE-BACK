@@ -2,122 +2,85 @@ const express = require("express");
 const router = express.Router();
 const trainingModel = require("../models/trainings.model");
 const authentication = require("../middlewares/authentication");
+const trainingController = require("../controllers/trainings.controller");
 
 //Getting all
-router.get("/", authentication.checkTokenMiddleware, async (req, res) => {
-  try {
-    const trainings = await trainingModel.find();
-    res.json(trainings);
-  } catch (err) {
+router.get("/", [authentication.checkTokenMiddleware], async (req, res) => {
+  trainingController.index(req, res).then(result => {
+    res.json(result);
+  }).catch(err => {
+    console.log(err.stack);
     res.status(500).json({ message: err.message });
-  }
+  })
 });
 
 //Getting One
 router.get(
   "/:id",
-  [authentication.checkTokenMiddleware, getTraining],
+  [authentication.checkTokenMiddleware],
   (req, res) => {
-    res.json(res.training);
+    trainingController.show(req, res).then(result => {
+      res.json(result);
+    }).catch(err => {
+      console.log(err.stack);
+      res.status(500).json({ message: err.message });
+    })
   }
 );
 
 router.get(
   "/user/:id",
-  [authentication.checkTokenMiddleware, getUserTrainings],
+  [authentication.checkTokenMiddleware],
   (req, res) => {
-    res.json(res.trainings);
+    trainingController.getUserTrainings(req, res).then(result => {
+      res.json(result);
+    }).catch(err => {
+      console.log(err.stack);
+      res.status(500).json({ message: err.message });
+    })
   }
 );
 
 // Creating one
-router.post("/", authentication.checkTokenMiddleware, async (req, res) => {
-  const training = new trainingModel({
-    userId: req.body.userId,
-    date: req.body.date,
-    effort: req.body.effort,
-    recap: req.body.recap,
-    duration: req.body.duration,
-    sportID: req.body.sportID,
-  });
-  try {
-    const newTraining = await training.save();
-    res.status(201).json(newTraining);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
+router.post("/", [authentication.checkTokenMiddleware], async (req, res) => {
+  trainingController.create(req, res).then(result => {
+    res.json(result);
+  }).catch(err => {
+    console.log(err.stack);
+    res.status(500).json({ message: err.message });
+  })
 });
 
 //Updating One
 router.patch(
   "/:id",
-  [authentication.checkTokenMiddleware, getTraining],
+  [authentication.checkTokenMiddleware],
   async (req, res) => {
-    if (req.body.userId != null) {
-      res.training.userId = req.body.userId;
-    }
-    if (req.body.effort != null) {
-      res.training.effort = req.body.effort;
-    }
-    if (req.body.recap != null) {
-      res.training.recap = req.body.recap;
-    }
-    if (req.body.duration != null) {
-      res.training.duration = req.body.duration;
-    }
-    if (req.body.sportID != null) {
-      res.training.sportID = req.body.sportID;
-    }
-
-    try {
-      const updatedTraining = await res.training.save();
-      res.json(updatedTraining);
-    } catch (err) {
-      res.status(400).json({ message: err.message });
-    }
+    trainingController.update(req, res).then(result => {
+      res.json(result);
+    }).catch(err => {
+      console.log(err.stack);
+      res.status(500).json({ message: err.message });
+    });
   }
 );
 
 //Deleting One
 router.delete(
   "/:id",
-  [authentication.checkTokenMiddleware, getTraining],
+  [authentication.checkTokenMiddleware],
   async (req, res) => {
-    try {
-      await res.training.remove();
-      res.json({ message: "Training deleted." });
-    } catch (err) {
+    trainingController.delete(req, res).then(result => {
+      res.json(result);
+    }).catch(err => {
+      console.log(err.stack);
       res.status(500).json({ message: err.message });
-    }
+    });
   }
 );
 
-async function getTraining(req, res, next) {
-  let training;
-  try {
-    training = await trainingModel.findById(req.params.id);
-    if (training == null) {
-      return res.status(404).json({ message: "Cannot find training" });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-  res.training = training;
-  next();
-}
 
-async function getUserTrainings(req, res, next) {
-  let trainings;
-  try {
-    trainings = await trainingModel.find({ id: req.params.userId });
-    if (trainings == null) {
-      return res.status(404).json({ message: "Cannot find user" });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-  res.trainings = trainings;
-  next();
-}
+
+
 
 module.exports = router;
