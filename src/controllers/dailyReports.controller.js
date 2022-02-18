@@ -2,16 +2,18 @@ const reportModel = require("../models/dailyReports.model");
 
 var dailyReportsController = {
     index: function (req, res) {
-        return reportModel.find().exec();
+        return reportModel.find().populate('cardiacRecordId').exec();
     },
     show: function (req, res) {
-        return reportModel.findById(req.params.id).exec();
+        return reportModel.findById(req.params.id).populate('dailyRecords').populate('cardiacRecordId').exec();
     },
     create: function (req, res) {
         const report = new reportModel({
             userId: req.body.userId,
+            cardiacRecordId: req.body.cardiacRecordId,
             dailyFeelings: req.body.dailyFeelings,
             size: req.body.size,
+            date: Date.now(),
             weight: req.body.weight,
             rmssd: req.body.rmssd,
             mhr: req.body.mhr,
@@ -21,6 +23,7 @@ var dailyReportsController = {
     },
     update: function (req, res) {
         return reportModel.findByIdAndUpdate(req.params.id, {
+            cardiacRecordId: req.body.cardiacRecordId,
             userId: req.body.userId,
             dailyFeelings: req.body.dailyFeelings,
             size: req.body.size,
@@ -46,14 +49,17 @@ var dailyReportsController = {
             "date": {
                 "$gt": d
             }
-        }).exec();
+        }).populate('dailyRecords').exec();
+
+
+
     },
     getUserReports: function (req, res) {
         return reportModel.find({
             "userId": {
                 "$eq": req.params.userId
             }
-        }).exec();
+        }).populate('cardiacRecordId').exec();
     },
     getReportLast5Days: async function (req, res) {
         let reports
@@ -75,12 +81,15 @@ var dailyReportsController = {
                 "$gt": dmin,
                 "$lt": dmax
             }
-        })
-        return reports.sort((a, b) => a.date - b.date);
+        }).populate('cardiacRecordId').exec();
+        if (reports.length > 0) {
 
+            return reports.sort((a, b) => a.date - b.date);
+        }
+        return null
     },
     getUserLastReport: async function (req, res) {
-        reports = await reportModel.find({ userId: req.params.userId });
+        reports = await reportModel.find({ userId: req.params.userId }).populate('cardiacRecordId').exec();
         if (reports.length > 0) {
             return reports[reports.length - 1];
         }

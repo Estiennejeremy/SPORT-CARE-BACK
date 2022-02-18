@@ -4,7 +4,7 @@ const IaClient = require("../services/ia-client");
 
 var cardiacRecordsController = {
     index: async function (req, res) {
-        return cardiacModel.find().exec();
+        return cardiacModel.find().populate('dailyReportId').exec();
     },
     show: async function (req, res) {
         return cardiacModel.findById(req.params.id).exec();
