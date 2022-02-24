@@ -1,13 +1,14 @@
-version: '3.5'
-
+version: '3'
 services:
-  back:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    ports: 
-      - "8000:8000"
-    restart: unless-stopped
-    volumes:
-      - ./mobile:/src 
-
+  node:
+      build: .
+      user: "node"
+      volumes:
+      - ./:/usr/src/app
+      ports: 
+          - 127.0.0.1:8000:8000
+      working_dir: /usr/src/app
+      environment:
+        - NODE_ENV=production
+      expose:
+        - "8000"

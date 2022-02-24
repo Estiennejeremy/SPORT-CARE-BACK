@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+var Schema = mongoose.Schema;
+
 //require('mongoose-double')(mongoose);
 mongoose.set("debug", true);
 
@@ -8,6 +10,7 @@ const reportSchema = new mongoose.Schema({
     required: true,
     default: 0,
   },
+  cardiacRecordId: { type: Schema.Types.ObjectId, ref: "cardiacRecords" },
   date: {
     type: Date,
     required: true,

@@ -1,13 +1,11 @@
 const mongoose = require("mongoose");
+var Schema = mongoose.Schema;
+
 //require('mongoose-double')(mongoose);
 mongoose.set("debug", true);
 
 const cardiacSchema = new mongoose.Schema({
-  dailyReportId: {
-    type: String,
-    required: true,
-    default: 0,
-  },
+  dailyReportId: { type: Schema.Types.ObjectId, ref: "dailyReports" },
   rmssd: {
     type: Number,
     min: 1,

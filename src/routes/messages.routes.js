@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const messageModel = require("../models/messages");
+const messageModel = require("../models/messages.model");
 const authentication = require("../middlewares/authentication");
 
 //Getting all
