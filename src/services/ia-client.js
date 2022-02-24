@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const IA_API_ENDPOINT = 'http://localhost:8000';
+const IA_API_ENDPOINT = 'http://localhost:3500';
 const RMSSD_ENPOINT = IA_API_ENDPOINT + '/rmssd';
 const STATE_ENDPOINT = IA_API_ENDPOINT + '/state';
 
