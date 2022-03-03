@@ -49,7 +49,7 @@ router.patch(
   "/:id",
   [authentication.checkTokenMiddleware],
   async (req, res) => {
-   usersController.update(req, res).then(result => {
+   usersController.patch(req, res).then(result => {
       res.json(result);
     }).catch(err => {
       console.log(err.stack);
