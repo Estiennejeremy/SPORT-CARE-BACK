@@ -56,8 +56,13 @@ router.post("/", async (req, res) => {
   }
 });
 
+//getIMConTimeSpan
+router.get("/imc/:userId&:timeSpan", getIMConTimeSpan, async (req, res) => {
+  res.json(res.IMCs);
+})
+
 //Updating One
-router.patch("/:id", getReport, async (req, res) => {
+router. patch("/:id", getReport, async (req, res) => {
   if (req.body.userId != null) {
     res.report.userId = req.body.userId;
   }
@@ -97,6 +102,77 @@ router.delete("/:id", getReport, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+async function getIMConTimeSpan(req, res, next) {
+  let _reports;
+  let _IMC = {
+    IMC : Number,
+    date : Date,
+  };
+  let _IMCs;
+  var currentDate = new Date();
+  let dmin = new Date();
+  let dmax = new Date();
+
+  try {
+    switch (req.params.timeSpan) {
+      case week:
+        dmin.setDate(currentDate.getDate() - 7 - (currentDate.getDay() - 1));
+        dmin.setHours(0);
+        dmin.setMinutes(0);
+        dmin.setSeconds(0);
+        console.log(dmin);
+
+        _reports = await reportModel.find({
+          "userId": {
+            "$eq": req.params.userId
+          },
+          "date": {
+            "$gt": dmin,
+            "$lt": dmin.setDate(dmin.getDate() + 7)
+          }
+        })
+        break;
+      case month:
+        dmin = new Date(currentDate.getFullYear, currentDate.getMonth - 1, 0);
+        dmax = new Date(currentDate.getFullYear, currentDate.getMonth, 0);
+        console.log(dmin);
+        console.log(dmax);
+
+        _reports = await reportModel.find({
+          "userId": {
+            "$eq": req.params.userId
+          },
+          "date": {
+            "$gt": dmin,
+            "$lt": dmax
+          }
+        })
+        break;
+    }
+    console.log(_reports)
+    if (_reports == null) {
+      return res.status(404).json({ message: "Cannot find report - IMC" });
+    }
+    else{
+      _reports.foreach((report) => {
+        console.log(report)
+        _IMC = {
+          IMC : (report.weight / (report.size / 100) * (report.size / 100)).toFixed(0),
+          date : report.date,
+        }
+        console.log(_IMC)
+        _IMCs.push(_IMC)
+      })
+    }
+    console.log(_IMCs)
+
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+  res.IMCs = _IMCs;
+  next();
+}
 
 async function getReport(req, res, next) {
   let report;

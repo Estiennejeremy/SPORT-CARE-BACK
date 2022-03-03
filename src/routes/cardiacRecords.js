@@ -24,7 +24,7 @@ router.get("/:id", getCardiacRecord, async (req, res) => {
 //Getting all for a report
 router.get("/dailyReport/:id", getReportCardiacRecords, (req, res) => {
   try {
-    res.json(res.cardiacRecord);
+    res.json(res.cardiacRecords);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -91,18 +91,18 @@ async function getCardiacRecord(req, res, next) {
 }
 
 async function getReportCardiacRecords(req, res, next) {
-  let cardiacRecords;
+  var _cardiacRecords;
   try {
-    cardiacRecords = await cardiacModel.find({
-      userId: req.params.dailyReportId,
+    _cardiacRecords = await cardiacModel.find({
+      dailyReportId: req.params.id,
     });
-    if (cardiacRecords == null) {
+    if (_cardiacRecords == null) {
       return res.status(404).json({ message: "Cannot find daily report" });
     }
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
-  res.cardiacRecords = cardiacRecords;
+  res.cardiacRecords = _cardiacRecords;
   next();
 }
 
