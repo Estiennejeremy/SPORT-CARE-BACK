@@ -27,7 +27,7 @@ var usersController = {
         })
 
     },
-    patch: function (req, res) {
+    patch: async function (req, res) {
         if (req.body.firstName != null) {
             res.user.firstName = req.body.firstName;
         }
@@ -65,7 +65,7 @@ var usersController = {
         } catch (err) {
             res.status(400).json({ message: err.message });
         }
-    }
+    },
     delete: function (req, res) {
         return userModel.findByIdAndRemove(req.params.id).exec();
     },
