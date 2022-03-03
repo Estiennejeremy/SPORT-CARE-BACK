@@ -28,40 +28,42 @@ var usersController = {
 
     },
     patch: async function (req, res) {
+        user = await userModel.findById(req.params.id);
+
         if (req.body.firstName != null) {
-            res.user.firstName = req.body.firstName;
+            user.firstName = req.body.firstName;
         }
         if (req.body.lastName != null) {
-            res.user.lastName = req.body.lastName;
+            user.lastName = req.body.lastName;
         }
         if (req.body.email != null) {
-            res.user.email = req.body.email;
+            user.email = req.body.email;
         }
         if (req.body.birthdate != null) {
-            res.user.birthdate = req.body.birthdate;
+            user.birthdate = req.body.birthdate;
         }
         if (req.body.address != null) {
-            res.user.address = req.body.address;
+            user.address = req.body.address;
         }
         if (req.body.role != null) {
-            res.user.role = req.body.role;
+            user.role = req.body.role;
         }
         if (req.body.civility != null) {
-            res.user.civility = req.body.civility;
+            user.civility = req.body.civility;
         }
         if (req.body.password != null) {
-            res.user.password = req.body.password;
+            user.password = req.body.password;
         }
         if (req.body.condition != null) {
-            res.user.condition = req.body.condition;
+            user.condition = req.body.condition;
         }
         if (req.body.coachId != null) {
-            res.user.coachId = req.body.coachId;
+            user.coachId = req.body.coachId;
         }
 
         try {
-            const updatedUser = await res.user.save();
-           return updatedUser
+            return await user.save();
+
         } catch (err) {
             res.status(400).json({ message: err.message });
         }
