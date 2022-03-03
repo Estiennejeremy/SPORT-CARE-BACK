@@ -6,49 +6,57 @@ const trainingController = require("../controllers/trainings.controller");
 
 //Getting all
 router.get("/", [authentication.checkTokenMiddleware], async (req, res) => {
-  trainingController.index(req, res).then(result => {
-    res.json(result);
-  }).catch(err => {
-    console.log(err.stack);
-    res.status(500).json({ message: err.message });
-  })
+  trainingController
+    .index(req, res)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.log(err.stack);
+      res.status(500).json({ message: err.message });
+    });
 });
 
 //Getting One
-router.get(
-  "/:id",
-  [authentication.checkTokenMiddleware],
-  (req, res) => {
-    trainingController.show(req, res).then(result => {
+router.get("/:id", [authentication.checkTokenMiddleware], (req, res) => {
+  trainingController
+    .show(req, res)
+    .then((result) => {
       res.json(result);
-    }).catch(err => {
+    })
+    .catch((err) => {
       console.log(err.stack);
       res.status(500).json({ message: err.message });
-    })
-  }
-);
+    });
+});
 
 router.get(
-  "/user/:id",
+  "/user/:userId",
   [authentication.checkTokenMiddleware],
   (req, res) => {
-    trainingController.getUserTrainings(req, res).then(result => {
-      res.json(result);
-    }).catch(err => {
-      console.log(err.stack);
-      res.status(500).json({ message: err.message });
-    })
+    trainingController
+      .getUserTrainings(req, res)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => {
+        console.log(err.stack);
+        res.status(500).json({ message: err.message });
+      });
   }
 );
 
 // Creating one
 router.post("/", [authentication.checkTokenMiddleware], async (req, res) => {
-  trainingController.create(req, res).then(result => {
-    res.json(result);
-  }).catch(err => {
-    console.log(err.stack);
-    res.status(500).json({ message: err.message });
-  })
+  trainingController
+    .create(req, res)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.log(err.stack);
+      res.status(500).json({ message: err.message });
+    });
 });
 
 //Updating One
@@ -56,12 +64,15 @@ router.patch(
   "/:id",
   [authentication.checkTokenMiddleware],
   async (req, res) => {
-    trainingController.update(req, res).then(result => {
-      res.json(result);
-    }).catch(err => {
-      console.log(err.stack);
-      res.status(500).json({ message: err.message });
-    });
+    trainingController
+      .update(req, res)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => {
+        console.log(err.stack);
+        res.status(500).json({ message: err.message });
+      });
   }
 );
 
@@ -70,17 +81,16 @@ router.delete(
   "/:id",
   [authentication.checkTokenMiddleware],
   async (req, res) => {
-    trainingController.delete(req, res).then(result => {
-      res.json(result);
-    }).catch(err => {
-      console.log(err.stack);
-      res.status(500).json({ message: err.message });
-    });
+    trainingController
+      .delete(req, res)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => {
+        console.log(err.stack);
+        res.status(500).json({ message: err.message });
+      });
   }
 );
-
-
-
-
 
 module.exports = router;
