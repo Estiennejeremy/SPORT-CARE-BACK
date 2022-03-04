@@ -13,6 +13,9 @@ var sportController = {
         });
         return sport.save();
     },
+    delete: function (req, res) {
+        return sportModel.findByIdAndRemove(req.params.id).exec();
+    },
     update: function (req, res) {
         return sportModel.findByIdAndUpdate(req.params.id, {
             name: req.body.name
