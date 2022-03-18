@@ -1,18 +1,17 @@
 const mongoose = require ('mongoose');
-//require('mongoose-double')(mongoose);
 mongoose.set('debug', true);
 
 
 const messageSchema = new mongoose.Schema ({
+    conversationId: {
+        type: String,
+        required: true,
+        default: null
+    },
     userId: {
         type: String,
         required: true,
-        default: 0
-    },
-    userIdRecever: {
-        type: String,
-        required: true,
-        default: 0
+        default: null
     },
     message: {
         type: String,
@@ -24,7 +23,8 @@ const messageSchema = new mongoose.Schema ({
         required: true,
         default: Date.now
     },
-})
+});
+
 
 
 module.exports = mongoose.model('messages', messageSchema);
