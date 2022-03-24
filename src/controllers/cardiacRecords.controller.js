@@ -56,7 +56,7 @@ var cardiacRecordsController = {
   },
   getReportCardiacRecords: async function (req, res, next) {
     return cardiacModel.find({
-      userId: req.params.dailyReportId, // TODO CHECK SI C'EST OK
+      dailyReportId: req.params.id,
     });
   },
 };
