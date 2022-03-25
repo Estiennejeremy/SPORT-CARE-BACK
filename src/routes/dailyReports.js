@@ -106,6 +106,7 @@ router.delete("/:id", getReport, async (req, res) => {
 
 
 async function getStatsonTimeSpan(req, res, next) {
+  console.log("get stats fct")
   let _reports;
   let _data = {
     IMC : Number,
@@ -121,11 +122,13 @@ async function getStatsonTimeSpan(req, res, next) {
   try {
     switch (req.body.timeSpan) {
       case "week":
+        console.log("try to get week stats");
         dmin.setDate(currentDate.getDate() - 7 - (currentDate.getDay() - 1));
         dmin.setHours(0);
         dmin.setMinutes(0);
         dmin.setSeconds(0);
-        console.log(dmin);
+        console.log("dmin " + dmin);
+        console.log("dmin + 7 " + dmin.setDate(dmin.getDate() + 7))
 
         _reports = await reportModel.find({
           "userId": {

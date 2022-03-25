@@ -113,81 +113,80 @@ var dailyReportsController = {
     }
   },
   getStatsonTimeSpan: async function (req, res) {
-    let _reports;
-    let _data = {
-      IMC: Number,
-      FCM: Number,
-      RMSSD: Double,
-      date: Date,
-    };
-    let _datas = [];
-    var currentDate = new Date();
-    let dmin = new Date();
-    let dmax = new Date();
+    console.log("get stats fct")
+  let _reports;
+  let _data = {
+    IMC : Number,
+    FCM : Number,
+    RMSSD : Double,
+    date : Date,
+  };
+  let _datas = [];
+  var currentDate = new Date();
+  let dmin = new Date();
+  let dmax = new Date();
 
-    try {
-      switch (req.body.timeSpan) {
-        case "week":
-          dmin.setDate(currentDate.getDate() - 7 - (currentDate.getDay() - 1));
-          dmin.setHours(0);
-          dmin.setMinutes(0);
-          dmin.setSeconds(0);
-          console.log("dmin", dmin);
+  try {
+    switch (req.body.timeSpan) {
+      case "week":
+        console.log("try to get week stats");
+        dmin.setDate(currentDate.getDate() - 7 - (currentDate.getDay() - 1));
+        dmin.setHours(0);
+        dmin.setMinutes(0);
+        dmin.setSeconds(0);
+        dmax =  dmax.setDate(dmin.getDate() + 6)
 
-          _reports = await reportModel.find({
-            userId: {
-              $eq: req.body.userId,
-            },
-            date: {
-              $gt: dmin,
-              $lt: dmin.setDate(dmin.getDate() + 7),
-            },
-          });
-          break;
-        case "month":
-          dmin = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
-          dmax = new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth() + 1,
-            0
-          );
-          console.log("dmin", dmin);
-          console.log("dmax", dmax);
+        _reports = await reportModel.find({
+          "userId": {
+            "$eq": req.body.userId
+          },
+          "date": {
+            "$gt": dmin,
+            "$lt": dmax
+          }
+        })
+        break;
+      case "month":
+        dmin = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+        dmax = new Date(currentDate.getFullYear(), currentDate.getMonth()+1, 0);
+        console.log(dmin);
+        console.log(dmax);
 
-          _reports = await reportModel.find({
-            userId: {
-              $eq: req.body.userId,
-            },
-            date: {
-              $gt: dmin,
-              $lt: dmax,
-            },
-          });
-          break;
-      }
-      console.log("_reports", _reports);
-      if (_reports == null) {
-        return res.status(404).json({ message: "Cannot find report" });
-      } else {
-        _reports.forEach((report) => {
-          console.log("report", report);
-          _data = {
-            IMC: (
-              report.weight /
-              ((report.size / 100) * (report.size / 100))
-            ).toFixed(0),
-            FCM: report.mhr,
-            RMSSD: report.rmssd,
-            date: report.date.getDate(),
-          };
-          console.log("_data", _data);
-          _datas.push(_data);
-        });
-      }
-      console.log("_datas", _datas);
-    } catch (err) {
-      return res.status(500).json({ message: err.message });
+        _reports = await reportModel.find({
+          "userId": {
+            "$eq": req.body.userId
+          },
+          "date": {
+            "$gt": dmin,
+            "$lt": dmax
+          }
+        })
+        break;
     }
+    console.log(_reports)
+    if (_reports == null) {
+      return res.status(404).json({ message: "Cannot find report" });
+    }
+    else{
+      _reports.
+      forEach((report) => {
+        console.log(report)
+        _data = {
+          IMC : (report.weight / ((report.size / 100) * (report.size / 100))).toFixed(0),
+          FCM: report.mhr,
+          RMSSD : report.rmssd,
+          date : report.date.getDate(),
+        }
+        console.log(_data)
+        _datas.push(_data)
+      })
+    }
+    _datas = _datas.sort((a,b) => a.date - b.date)
+    console.log(_datas)
+
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
     return _datas;
   },
 };

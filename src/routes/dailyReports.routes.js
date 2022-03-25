@@ -150,6 +150,7 @@ router.get("/last/:userId", (req, res) => {
       res.json(result);
     })
     .catch((err) => {
+      console.log(err.message)
       console.log(err.stack);
       res.status(500).json({ message: err.message });
     });
