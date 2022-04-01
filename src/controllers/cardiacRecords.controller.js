@@ -25,8 +25,8 @@ var cardiacRecordsController = {
         allRm.push(item.rmssd);
       }
 
-
-      allRm.push(rmssd.data);
+      console.log(rmssd.data.data)
+      allRm.push(rmssd.data.data);
       status = await IaClient.getState(allRm);
     }
     const average = (await req.body.hrData).reduce(
@@ -43,7 +43,7 @@ var cardiacRecordsController = {
 
     const cardiacRecord = new cardiacModel({
       dailyReportId: req.body.dailyReportId,
-      rmssd: rmssd.data,
+      rmssd: rmssd.data.data,
       heartRate: average,
       hrData: hrData,
       currentStatus: status.data,
