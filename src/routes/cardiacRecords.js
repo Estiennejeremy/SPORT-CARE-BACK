@@ -32,6 +32,7 @@ router.get("/dailyReport/:id", getReportCardiacRecords, (req, res) => {
 
 // Creating one
 router.post("/", async (req, res) => {
+  console.log("ici ")
   const cardiacRecord = new cardiacModel({
     dailyReportId: req.body.dailyReportId,
     rmssd: req.body.rmssd,
@@ -42,6 +43,7 @@ router.post("/", async (req, res) => {
     const newCardiacRecord = await cardiacRecord.save();
     res.status(201).json(newCardiacRecord);
   } catch (err) {
+    console.log(err.stack);
     res.status(400).json({ message: err.message });
   }
 });

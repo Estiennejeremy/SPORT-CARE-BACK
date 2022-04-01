@@ -19,23 +19,34 @@ var cardiacRecordsController = {
     const fiveLastRmssd = (await allModels)
       .filter((model) => model.rmssd)
       .slice(Math.max(allModels.length - 5, 0));
-    console.log(fiveLastRmssd);
     rmssd = await IaClient.getRmssd(req.body.hrData);
     if (fiveLastRmssd.length >= 4) {
       for (const item of fiveLastRmssd) {
         allRm.push(item.rmssd);
       }
-      allRm.push(rmssd);
+
+
+      allRm.push(rmssd.data);
       status = await IaClient.getState(allRm);
     }
-    const average =
-      req.body.hrData.reduce((a, b) => a + b) / req.body.hrData.length;
+    const average = (await req.body.hrData).reduce(
+      (acc, cur) => acc + cur.heartrate,
+      0
+    ) / req.body.hrData.length;
+    console.log(average, "COUCOCUOCUCOCUUCOCU");
+
+    let hrData = [];
+    req.body.hrData.map((item) => {
+      hrData.push(item.heartrate);
+    })
+
+
     const cardiacRecord = new cardiacModel({
       dailyReportId: req.body.dailyReportId,
-      rmssd: rmssd,
+      rmssd: rmssd.data,
       heartRate: average,
-      hrData: req.body.hrData,
-      currentStatus: status,
+      hrData: hrData,
+      currentStatus: status.data,
     });
     return cardiacRecord.save();
   },
