@@ -4,6 +4,14 @@ const bcrypt = require("bcryptjs");
 
 var usersController = {
     index: function (req, res) {
+        //find all user by coach id 
+        if (req.query.userId) {
+            return userModel.find({
+                coachId: {
+                    $eq: req.query.userId,
+                },
+            }).exec();
+        }
         return userModel.find().exec();
     },
     show: function (req, res) {
