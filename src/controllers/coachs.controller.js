@@ -3,7 +3,15 @@ const coachModel = require("../models/coachs.model");
 
 var coachController = {
     index: function (req, res) {
+        if (req.query.userId) {
+            return coachModel.find({
+                userId: {
+                    $eq: req.query.userId,
+                },
+            }).exec();
+        }
         return coachModel.find().exec();
+
     },
     show: function (req, res) {
         return coachModel.findById(req.params.id).exec();
