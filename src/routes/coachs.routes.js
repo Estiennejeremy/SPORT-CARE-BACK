@@ -7,7 +7,7 @@ const coachController = require("../controllers/coachs.controller");
 //Getting all
 router.get("/", authentication.checkTokenMiddleware, async (req, res) => {
   coachController.index(req, res).then((coachs) => {
-    res.json(cardiacRecords);
+    res.json(coachs);
   }).catch((err) => {
     console.log(err.stack);
     res.status(500).json({ message: err.message });

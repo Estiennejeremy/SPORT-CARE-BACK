@@ -16,7 +16,7 @@ const cardiacSchema = new mongoose.Schema({
   heartRate: {
     type: Number,
     min: 30,
-    max: 200,
+    max: 600,
     required: false,
     default: null,
   },
