@@ -114,7 +114,7 @@ router.patch(
   [authentication.checkTokenMiddleware],
   async (req, res) => {
     dailyReportsController
-      .update(req, res)
+      .patch(req, res)
       .then((result) => {
         res.json(result);
       })

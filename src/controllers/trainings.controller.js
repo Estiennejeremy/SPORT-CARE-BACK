@@ -46,5 +46,18 @@ var trainingsController = {
       })
       .exec();
   },
+  getUserLasTrainings: async function (req, res) {
+    const test = await trainingModel
+      .find({
+        userId: {
+          $eq: req.params.id,
+        },
+      })
+      .sort({ date: -1 })
+      .limit(1)
+      .exec();
+    console.log(test);
+    return test
+  },
 };
 module.exports = trainingsController;

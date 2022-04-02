@@ -30,6 +30,20 @@ router.get("/:id", [authentication.checkTokenMiddleware], (req, res) => {
     });
 });
 
+router.get("/last/:id", [authentication.checkTokenMiddleware], (req, res) => {
+  trainingController
+    .getUserLasTrainings(req, res)
+    .then((result) => {
+      console.log(result,'COUCOUUUU');
+      res.json(result);
+    })
+    .catch((err) => {
+      console.log(err.stack);
+      res.status(500).json({ message: err.message });
+    });
+});
+
+
 router.get(
   "/user/:userId",
   [authentication.checkTokenMiddleware],
